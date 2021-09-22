@@ -6,21 +6,26 @@
     <top-nav v-if="topNav" id="topmenu-container" class="breadcrumb-container" />
 
     <div class="right-menu">
+      <div class="right-menu-item duty"> 
+        <svg-icon icon-class='duty' style="width:24px"/>
+        <span>今日值班：{{onduty}}</span><span style="margin-left:10px">BACKUP: {{backupOne}}</span>
+        <svg-icon icon-class='wechat' style="width:24px"/>
+        <span>RedKV服务号</span>
+      </div>
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
-
+        <!--search id="header-search" class="right-menu-item" /-->
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img src="@/assets/logo/avatar.jpeg" class="user-avatar">
+		  <span class="user-avatar-title">{{this.$store.state.user.name}}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>个人中心</el-dropdown-item>
+          <router-link to="/dashboard">
+            <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出登录</span>
@@ -37,15 +42,26 @@ import Breadcrumb from '@/components/Breadcrumb'
 import TopNav from '@/components/TopNav'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
-import Search from '@/components/HeaderSearch'
+import {getDutyData} from '@/api/xhst'
+//import Search from '@/components/HeaderSearch'
 
 export default {
   components: {
     Breadcrumb,
     TopNav,
     Hamburger,
-    Screenfull,
-    Search
+    Screenfull
+    //Search
+  },
+
+  data() {
+    return {
+      onduty: "云哲（李清炳）",
+      backupOne: "烦了（刘军）"
+    }
+  },
+  created() {
+    this.getDuty()
   },
   computed: {
     ...mapGetters([
@@ -74,6 +90,19 @@ export default {
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
+    },
+    getDuty() {
+      var that = this;
+      getDutyData().then(response => {
+        var duty = response.data
+        if (duty && duty.length >= 1) {
+          that.onduty = duty[0].userName
+          that.backupOne = duty[0].backupOne
+        } else {
+          that.onduty = "云哲（李清炳）"
+          that.backupOne = "烦了（刘军）"
+        }
+      })
     },
     async logout() {
       this.$confirm('确定注销并退出系统吗？', '提示', {
@@ -136,6 +165,11 @@ export default {
       font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
+	  
+      &.duty {
+		color: red;
+		font-weight:bold;
+      }
 
       &.hover-effect {
         cursor: pointer;
@@ -153,6 +187,11 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+
+	    .user-avatar-title {
+          cursor: pointer;
+		  border: 1px solid black;
+        }
 
         .user-avatar {
           cursor: pointer;

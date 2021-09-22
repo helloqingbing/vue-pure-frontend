@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'go-admin后台管理系统',
+  title: 'RedKV赤骥平台',
 
   /**
    * @type {boolean} true | false
@@ -10,7 +10,7 @@ module.exports = {
   /**
    * 是否显示顶部导航
    */
-  topNav: true,
+  topNav: false,
 
   /**
    * @type {boolean} true | false
