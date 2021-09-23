@@ -7,10 +7,11 @@
 
     <div class="right-menu">
       <div class="right-menu-item duty"> 
-        <svg-icon icon-class='duty' style="width:24px"/>
-        <span>今日值班：{{onduty}}</span><span style="margin-left:10px">BACKUP: {{backupOne}}</span>
-        <svg-icon icon-class='wechat' style="width:24px"/>
-        <span>RedKV服务号</span>
+        <svg-icon icon-class='duty'/>
+        <span class="content">今日值班：{{onduty}}</span>
+		<span class="content">BACKUP：{{backupOne}}</span>
+        <svg-icon icon-class='wechat'/> 
+        <span class="content">RedKV服务号</span>
       </div>
       <template v-if="device!=='mobile'">
         <!--search id="header-search" class="right-menu-item" /-->
@@ -28,7 +29,7 @@
             <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出登录</span>
+            <span style="display:block;" @click="logout">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -157,14 +158,24 @@ export default {
     &:focus {
       outline: none;
     }
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+      margin: -5px 5px;
+    }
 
     .right-menu-item {
       display: inline-block;
       padding: 0 8px;
       height: 100%;
-      font-size: 18px;
+      font-size: 16px;
       color: #5a5e66;
       vertical-align: text-bottom;
+	 
+	  .content {
+		margin-right: 10px;
+		font-size: 15px;
+	  }
 	  
       &.duty {
 		color: red;
@@ -182,22 +193,26 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
+      margin-right: 20px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+	    display: flex;
         position: relative;
 
 	    .user-avatar-title {
           cursor: pointer;
-		  border: 1px solid black;
+		  display: flex;
+		  align-items: center;
+		  font-size: 15px;
+		  margin-left: 5px;
         }
-
         .user-avatar {
           cursor: pointer;
+		  margin-top: 5px;
           width: 40px;
           height: 40px;
           border-radius: 50%;
+		  border: 1px solid #DDD;
         }
 
         .el-icon-caret-bottom {

@@ -35,10 +35,35 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: false,
+    open: true,
+    disableHostCheck: true,
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/api': {
+        target:'http://127.0.0.1:8000',
+        changeOrigin:true,
+        ws: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+      '/cas': {
+        target: "http://porch-api.int.sit.xiaohongshu.com/api/cas",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/cas': ''
+        }
+      },
+	  '/duty': {
+        target:"https://qazeus.devops.xiaohongshu.com/zeus/api/duty",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/duty': ''
+        }
+      }
     }
   },
   configureWebpack: {

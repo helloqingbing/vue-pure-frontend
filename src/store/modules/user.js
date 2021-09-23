@@ -1,5 +1,5 @@
 import { login, logout, getInfo, refreshtoken } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, setUserName, getUserName, removeToken, setEmail, getEmail, getRole, setRole } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import storage from '@/utils/storage'
 
@@ -41,6 +41,18 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
+    console.log("store login: " + userInfo.username)
+    //commit('SET_TOKEN', userInfo.auth_token)
+    //setToken(userInfo.auth_token)
+    commit('SET_NAME', userInfo.username)
+    setUserName(userInfo.username)
+    commit('SET_EMAIL', userInfo.useremail)
+    setEmail(userInfo.useremail)
+    var roleParams = {
+      appName: 'redkvops',
+      userName: userInfo.useremail.replace("@xiaohongshu.com", ""),
+    }
+    /*
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
         const { token } = response
@@ -50,7 +62,7 @@ const actions = {
       }).catch(error => {
         reject(error)
       })
-    })
+    })*/
   },
 
   // get user info
