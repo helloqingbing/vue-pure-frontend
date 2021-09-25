@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      src: process.env.VUE_APP_BASE_API + '/form-generator/index.html',
+      src: process.env.VUE_APP_SYSDOAMIN + '/form-generator/index.html',
       height: document.documentElement.clientHeight - 94.5 + 'px;',
       loading: true
     }
