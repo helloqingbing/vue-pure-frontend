@@ -1,13 +1,16 @@
-import { login, logout, getInfo, refreshtoken } from '@/api/user'
+import { login, logout, getInfo, refreshtoken, getRbacRole } from '@/api/user'
 import { getToken, setToken, setUserName, getUserName, removeToken, setEmail, getEmail, getRole, setRole } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import storage from '@/utils/storage'
+import cas from '@/utils/sso'
 
 const state = {
   token: getToken(),
   name: '',
+  id: '',
   avatar: '',
   introduction: '',
+  email: '',
   roles: [],
   permissions: [],
   permisaction: []
@@ -22,6 +25,12 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_ID: (state, id) => {
+    state.id = id
+  },
+  SET_EMAIL: (state, email) => {
+    state.email = email
   },
   SET_AVATAR: (state, avatar) => {
     if (avatar.indexOf('http') !== -1) {
@@ -41,17 +50,33 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    console.log("store login: " + userInfo.username)
-    //commit('SET_TOKEN', userInfo.auth_token)
-    //setToken(userInfo.auth_token)
-    commit('SET_NAME', userInfo.username)
-    setUserName(userInfo.username)
-    commit('SET_EMAIL', userInfo.useremail)
-    setEmail(userInfo.useremail)
-    var roleParams = {
-      appName: 'redkvops',
-      userName: userInfo.useremail.replace("@xiaohongshu.com", ""),
-    }
+    return new Promise((resolve, reject) => {
+      console.log("store login: " + userInfo.username)
+      //commit('SET_TOKEN', userInfo.auth_token)
+      //setToken(userInfo.auth_token)
+      commit('SET_NAME', userInfo.username)
+      setUserName(userInfo.username)
+      commit('SET_EMAIL', userInfo.email)
+      setEmail(userInfo.email)
+      commit('SET_TOKEN', userInfo.token)
+      setToken(userInfo.token)
+      var roleParams = {
+        appName: 'redkvops',
+        userName: userInfo.email.replace("@xiaohongshu.com", ""),
+      }
+      getRbacRole(roleParams).then(response => {
+        var roles = []
+        if(response.data.length > 0){
+          var roles = ['admin']
+        }
+        /*
+        commit('SET_ROLES', roles)
+        setRole(roles[0])*/
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
     /*
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
@@ -84,8 +109,8 @@ const actions = {
         commit('SET_PERMISSIONS', permissions)
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
+        //commit('SET_AVATAR', avatar)
+        //commit('SET_INTRODUCTION', introduction)
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -94,13 +119,15 @@ const actions = {
   },
   // 退出系统
   LogOut({ commit, state }) {
+    // Promise最大的好处是在异步执行的流程中，把执行代码和处理结果的代码清晰的分离了
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout().then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         commit('SET_PERMISSIONS', [])
         removeToken()
         storage.clear()
+        cas.logout()
         resolve()
       }).catch(error => {
         reject(error)

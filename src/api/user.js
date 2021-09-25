@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import qs from 'qs'
 
 // login 登陆
 export function login(data) {
@@ -34,3 +35,14 @@ export function getInfo() {
   })
 }
 
+// getRole 获取用户的Rbac角色
+export function getRbacRole(data){
+  return request({
+    url:'/permission/list',
+    method:'get',
+    params: data,
+    paramsSerializer: params => {
+      return qs.stringify(params, { indices: false })
+    }
+  })
+}

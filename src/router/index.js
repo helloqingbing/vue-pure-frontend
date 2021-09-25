@@ -71,6 +71,7 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    // Default router to DashBorad
     path: '/',
     component: Layout,
     redirect: '/dashboard',

@@ -6,11 +6,11 @@
     <top-nav v-if="topNav" id="topmenu-container" class="breadcrumb-container" />
 
     <div class="right-menu">
-      <div class="right-menu-item duty"> 
+      <div class="right-menu-item duty">
         <svg-icon icon-class='duty'/>
         <span class="content">今日值班：{{onduty}}</span>
 		<span class="content">BACKUP：{{backupOne}}</span>
-        <svg-icon icon-class='wechat'/> 
+        <svg-icon icon-class='wechat'/>
         <span class="content">RedKV服务号</span>
       </div>
       <template v-if="device!=='mobile'">
@@ -29,7 +29,7 @@
             <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出</span>
+            <span style="display:block;" @click="logout">登出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -106,7 +106,10 @@ export default {
       })
     },
     async logout() {
-      this.$confirm('确定注销并退出系统吗？', '提示', {
+      this.$store.dispatch('user/LogOut').then(() => {
+        location.reload()
+      })
+      /*this.$confirm('确定注销并退出系统吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -114,7 +117,7 @@ export default {
         this.$store.dispatch('user/LogOut').then(() => {
           location.reload()
         })
-      })
+      })*/
     }
   }
 }
@@ -171,15 +174,15 @@ export default {
       font-size: 16px;
       color: #5a5e66;
       vertical-align: text-bottom;
-	 
-	  .content {
-		margin-right: 10px;
-		font-size: 15px;
-	  }
-	  
+
+    .content {
+      margin-right: 10px;
+      font-size: 15px;
+    }
+
       &.duty {
-		color: red;
-		font-weight:bold;
+        color: red;
+        font-weight:bold;
       }
 
       &.hover-effect {
@@ -201,18 +204,18 @@ export default {
 
 	    .user-avatar-title {
           cursor: pointer;
-		  display: flex;
-		  align-items: center;
-		  font-size: 15px;
-		  margin-left: 5px;
+          display: flex;
+          align-items: center;
+          font-size: 15px;
+          margin-left: 5px;
         }
         .user-avatar {
           cursor: pointer;
-		  margin-top: 5px;
+          margin-top: 5px;
           width: 40px;
           height: 40px;
           border-radius: 50%;
-		  border: 1px solid #DDD;
+          border: 1px solid #DDD;
         }
 
         .el-icon-caret-bottom {

@@ -250,11 +250,11 @@ String.prototype.colorRgb = function() {
 .tags-view-container ::v-deep{
   height: 43px;
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-  padding: 0 15px;
-  box-sizing: border-box;
+  background: #FFF;
+  /*border-bottom: 1px solid #d8dce5;*/
+  /*box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);*/
+  padding: 0 1px;
+  /*box-sizing: border-box;*/
   .el-tabs__item{
     &:hover{
       color: #000;

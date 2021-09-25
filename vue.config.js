@@ -43,11 +43,19 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target:'http://127.0.0.1:8000',
+        target:'http://127.0.0.1:8000/api',
         changeOrigin:true,
         ws: true,
         pathRewrite: {
           '^/api': ''
+        }
+      },
+      '/form-generator': {
+        target:'http://127.0.0.1:8000/',
+        changeOrigin:true,
+        ws: true,
+        pathRewrite: {
+          '^/form-generator': 'static/form-generator'
         }
       },
       '/cas': {
@@ -57,12 +65,19 @@ module.exports = {
           '^/cas': ''
         }
       },
-	  '/duty': {
+	    '/duty': {
         target:"https://qazeus.devops.xiaohongshu.com/zeus/api/duty",
         changeOrigin: true,
         pathRewrite: {
           '^/duty': ''
         }
+      },
+      '/permission':{
+        target:"https://rbacfe.devops.xiaohongshu.com/api/permission",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/permission':''
+        },
       }
     }
   },

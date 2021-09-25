@@ -75,7 +75,7 @@ export function getListrole(id) {
 
 export function getRoutes() {
   return request({
-    url: '/api/v1/menurole',
+    url: '/api/v1/menu',
     method: 'get'
   })
 }

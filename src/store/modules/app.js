@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const state = {
   sidebar: {
+    //+hideNotice 把字符串转换为数字, !+hideNotice 逻辑非运算，当数字为 0 或者 NaN 时返回 true
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
   },

@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     isActive(route) {
-      return route.path === this.$route.path
+      return (route.path === this.$route.path) ? true : false
     },
     isAffix(tag) {
       return tag.meta && tag.meta.affix

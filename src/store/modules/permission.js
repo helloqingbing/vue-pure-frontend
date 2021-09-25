@@ -117,11 +117,6 @@ const mutations = {
     state.defaultRoutes = constantRoutes.concat(routes)
   },
   SET_TOPBAR_ROUTES: (state, routes) => {
-    // 顶部导航菜单默认添加统计报表栏指向首页
-    // const index = [{
-    //   path: 'dashboard',
-    //   meta: { title: '统计报表', icon: 'dashboard' }
-    // }]
     state.topbarRouters = routes // .concat(index)
   },
   SET_SIDEBAR_ROUTERS: (state, routes) => {
@@ -130,10 +125,9 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes({ commit }) {
     return new Promise(resolve => {
       const loadMenuData = []
-
       getRoutes().then(response => {
         // console.log(JSON.stringify(response))
         let data = response

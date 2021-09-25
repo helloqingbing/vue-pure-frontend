@@ -22,18 +22,26 @@ export function setUserName(name) {
   return Cookies.set('UserName', name)
 }
 
+export function getUserID() {
+  return Cookies.get('UserID')
+}
+
+export function setUserID(id) {
+  return Cookies.set('UserID', id)
+}
+
 export function getEmail() {
-  return Cookies.get('email')
+  return Cookies.get('Email')
 }
 
 export function setEmail(email) {
-  return Cookies.set('email', email)
+  return Cookies.set('Email', email)
 }
 
 export function getRole() {
-  return Cookies.get('role')
+  return Cookies.get('Role')
 }
 
 export function setRole(role) {
-  return Cookies.set('role', role)
+  return Cookies.set('Role', role)
 }
