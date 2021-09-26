@@ -14,12 +14,13 @@ const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-  console.log(to.path)
+  debugger
+  console.log("to: " + to.path)
   // set page title
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
-  const hasToken = getToken()
+  const hasToken = await getToken()
 
   if (hasToken) {
     if (to.path === '/login') {
@@ -28,20 +29,19 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done()
     } else {
       // determine whether the user has obtained his permission roles through getInfo
-      const hasGetUserInfo = store.getters.roles && store.getters.roles.length > 0
+      const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
         next()
       } else {
         try {
           // get user info
-          debugger
           // !!!note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          await store.dispatch('system/settingDetail')
           await store.dispatch('user/getInfo')
 
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes')
-          console.log(accessRoutes)
-          debugger
+
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
 
@@ -59,14 +59,25 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* has no token*/
-
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()
     } else {
       // other pages that do not have permission to access are redirected to the login page.
-      cas.enableCasAuth();
-      next()
+      await cas.enableCasAuth();
+      await store.dispatch('system/settingDetail')
+      await store.dispatch('user/getInfo')
+
+      // generate accessible routes map based on roles
+      const accessRoutes = await store.dispatch('permission/generateRoutes')
+
+      // dynamically add accessible routes
+      router.addRoutes(accessRoutes)
+
+      // hack method to ensure that addRoutes is complete
+      // set the replace: true, so the navigation will not leave a history record
+      next({ ...to, replace: true })
+      //next()
       NProgress.done()
     }
   }

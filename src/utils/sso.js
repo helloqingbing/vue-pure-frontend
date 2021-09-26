@@ -16,7 +16,7 @@ A: 造成这个问题的原因是，sso登录成功了且在cookie中种了对�
 需要确保业务系统鉴权时携带的service也进行了encode
 */
 export default {
-  enableCasAuth() {
+  async enableCasAuth() {
     //debugger
     const token = getToken()
     if (token) {
@@ -25,7 +25,7 @@ export default {
 
     if (this.isCasCallback()) {
       const ticket = this.getTicket()
-      this.getAuthInfo(ticket).then(res => {
+      await this.getAuthInfo(ticket).then(res => {
         if (res.success) {
           store.dispatch('user/login', res).then(() => { })
         } else {

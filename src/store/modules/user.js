@@ -51,13 +51,11 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      console.log("store login: " + userInfo.username)
-      //commit('SET_TOKEN', userInfo.auth_token)
-      //setToken(userInfo.auth_token)
+      console.log("login succeed, response data: " + JSON.stringify(userInfo))
+
       commit('SET_NAME', userInfo.username)
       setUserName(userInfo.username)
       commit('SET_EMAIL', userInfo.email)
-      setEmail(userInfo.email)
       commit('SET_TOKEN', userInfo.token)
       setToken(userInfo.token)
       var roleParams = {
@@ -69,9 +67,8 @@ const actions = {
         if(response.data.length > 0){
           var roles = ['admin']
         }
-        /*
-        commit('SET_ROLES', roles)
-        setRole(roles[0])*/
+        //commit('SET_ROLES', roles)
+        //setRole(roles[0])
         resolve()
       }).catch(error => {
         reject(error)
@@ -100,16 +97,10 @@ const actions = {
           resolve()
         }
 
-        const { roles, name, avatar, introduction, permissions } = response.data
+        const { name, avatar } = response.data
 
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-        commit('SET_PERMISSIONS', permissions)
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        //commit('SET_AVATAR', avatar)
+        commit('SET_NAME', getUserName())
+        commit('SET_AVATAR', avatar)
         //commit('SET_INTRODUCTION', introduction)
         resolve(response)
       }).catch(error => {

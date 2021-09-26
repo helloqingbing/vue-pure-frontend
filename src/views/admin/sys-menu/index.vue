@@ -116,21 +116,19 @@
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
             <template slot-scope="scope">
               <el-button
-                v-permisaction="['admin:sysMenu:edit']"
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
               >修改</el-button>
               <el-button
-                v-permisaction="['admin:sysMenu:add']"
                 size="mini"
                 type="text"
                 icon="el-icon-plus"
                 @click="handleAdd(scope.row)"
               >新增</el-button>
               <el-button
-                v-permisaction="['admin:sysMenu:remove']"
+
                 size="mini"
                 type="text"
                 icon="el-icon-delete"

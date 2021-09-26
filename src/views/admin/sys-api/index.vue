@@ -122,7 +122,7 @@
           >
             <template slot-scope="scope">
               <el-button
-                v-permisaction="['admin:sysApi:edit']"
+                
                 size="mini"
                 type="text"
                 icon="el-icon-edit"

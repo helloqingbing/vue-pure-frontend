@@ -9,7 +9,7 @@
       <div class="right-menu-item duty">
         <svg-icon icon-class='duty'/>
         <span class="content">今日值班：{{onduty}}</span>
-		<span class="content">BACKUP：{{backupOne}}</span>
+          <span class="content">BACKUP：{{backupOne}}</span>
         <svg-icon icon-class='wechat'/>
         <span class="content">RedKV服务号</span>
       </div>
@@ -21,7 +21,7 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
           <img src="@/assets/logo/avatar.jpeg" class="user-avatar">
-		  <span class="user-avatar-title">{{this.$store.state.user.name}}</span>
+            <span class="user-avatar-title">{{this.$store.state.user.name}}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -175,10 +175,10 @@ export default {
       color: #5a5e66;
       vertical-align: text-bottom;
 
-    .content {
-      margin-right: 10px;
-      font-size: 15px;
-    }
+      .content {
+        margin-right: 10px;
+        font-size: 15px;
+      }
 
       &.duty {
         color: red;
@@ -195,14 +195,22 @@ export default {
       }
     }
 
-    .avatar-container {
+    #screenfull:hover {
+      cursor: pointer;
+    }
+
+    .avatar-container{
       margin-right: 20px;
 
+      .avatar-wrapper:hover {
+        cursor: pointer;
+      }
+
       .avatar-wrapper {
-	    display: flex;
+        display: flex;
         position: relative;
 
-	    .user-avatar-title {
+        .user-avatar-title {
           cursor: pointer;
           display: flex;
           align-items: center;

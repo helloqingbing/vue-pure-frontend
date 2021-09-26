@@ -42,7 +42,7 @@
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
-              v-permisaction="['admin:sysConfig:add']"
+
               type="primary"
               icon="el-icon-plus"
               size="mini"
@@ -51,7 +51,7 @@
           </el-col>
           <el-col :span="1.5">
             <el-button
-              v-permisaction="['admin:sysConfig:edit']"
+
               type="success"
               icon="el-icon-edit"
               size="mini"
@@ -61,7 +61,7 @@
           </el-col>
           <el-col :span="1.5">
             <el-button
-              v-permisaction="['admin:sysConfig:remove']"
+
               type="danger"
               icon="el-icon-delete"
               size="mini"
@@ -71,7 +71,7 @@
           </el-col>
           <el-col :span="1.5">
             <el-button
-              v-permisaction="['admin:sysConfig:export']"
+              
               type="warning"
               icon="el-icon-download"
               size="mini"
