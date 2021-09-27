@@ -16,7 +16,7 @@ export default {
   },
   data() {
     return {
-      src: process.env.VUE_APP_BASE_API + '/swagger/index.html',
+      src: process.env.VUE_APP_BACKEND_API + '/swagger/index.html',
       height: document.documentElement.clientHeight - 94.5 + 'px;',
       loading: true
     }

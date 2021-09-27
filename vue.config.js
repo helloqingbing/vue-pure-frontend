@@ -50,14 +50,6 @@ module.exports = {
           '^/api': ''
         }
       },
-      '/form-generator': {
-        target:'http://127.0.0.1:8000/',
-        changeOrigin:true,
-        ws: true,
-        pathRewrite: {
-          '^/form-generator': 'static/form-generator'
-        }
-      },
       '/cas': {
         target: "http://porch-api.int.sit.xiaohongshu.com/api/cas",
         changeOrigin: true,
