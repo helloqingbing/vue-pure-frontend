@@ -14,7 +14,7 @@ const mutations = {
 const actions = {
   settingDetail({ commit }) {
     return new Promise((resolve, reject) => {
-      debugger
+      //debugger
       getSetting().then(response => {
         const { data } = response
         commit('SET_INFO', data)

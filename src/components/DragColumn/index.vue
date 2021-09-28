@@ -34,13 +34,13 @@ export default {
   mounted() {
     this.layoutWidth = document.querySelector('.layout').clientWidth
     this.dragWidth = document.querySelector('.layout-drag').clientWidth
-    this.leftWidth = (0.165 * this.layoutWidth) + 'px'
-    this.rightWidth = (0.825 * this.layoutWidth) + 'px'
+    this.leftWidth = (0.194 * this.layoutWidth) + 'px'
+    this.rightWidth = (0.80 * this.layoutWidth) + 'px'
     window.onresize = () => {
       this.layoutWidth = document.querySelector('.layout').clientWidth
       this.dragWidth = document.querySelector('.layout-drag').clientWidth
-      this.leftWidth = (0.165 * this.layoutWidth) + 'px'
-      this.rightWidth = (0.825 * this.layoutWidth) + 'px'
+      this.leftWidth = (0.194 * this.layoutWidth) + 'px'
+      this.rightWidth = (0.80 * this.layoutWidth) + 'px'
     }
   },
   methods: {
@@ -55,9 +55,9 @@ export default {
         const t = movePos.x - this.disX
         const surplusWidth = this.layoutWidth - this.dragWidth - t
         const leftWidth = this.layoutWidth - this.dragWidth - surplusWidth
-        if (leftWidth < 260) {
+        if (leftWidth < 230) {
           return false
-        } else if (surplusWidth < 260) {
+        } else if (surplusWidth < 230) {
           return false
         }
         this.leftWidth = leftWidth + 'px'
@@ -91,7 +91,7 @@ export default {
     bottom: 0;
   }
   .layout-drag {
-    width: 1%;
+    width: 0.6%;
     position: absolute;
     height: 100%;
     top: 0;
