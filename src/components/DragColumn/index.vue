@@ -34,13 +34,13 @@ export default {
   mounted() {
     this.layoutWidth = document.querySelector('.layout').clientWidth
     this.dragWidth = document.querySelector('.layout-drag').clientWidth
-    this.leftWidth = (0.194 * this.layoutWidth) + 'px'
-    this.rightWidth = (0.80 * this.layoutWidth) + 'px'
+    this.leftWidth = '230px'//(0.194 * this.layoutWidth) + 'px'
+    this.rightWidth = this.layoutWidth - 238 + 'px' //(0.80 * this.layoutWidth) + 'px'
     window.onresize = () => {
       this.layoutWidth = document.querySelector('.layout').clientWidth
       this.dragWidth = document.querySelector('.layout-drag').clientWidth
-      this.leftWidth = (0.194 * this.layoutWidth) + 'px'
-      this.rightWidth = (0.80 * this.layoutWidth) + 'px'
+      this.leftWidth = '230px'//(0.194 * this.layoutWidth) + 'px'
+      this.rightWidth = this.layoutWidth - 238 + 'px' //(0.80 * this.layoutWidth) + 'px'
     }
   },
   methods: {
@@ -83,7 +83,7 @@ export default {
   height: calc(100vh - 113px);
   position: relative;
   .layout-left {
-    width: 25.5%;
+    width: 230px;
     height: 100%;
     position: absolute;
     top: 0;
@@ -96,7 +96,7 @@ export default {
     height: 100%;
     top: 0;
     bottom: 0;
-    left: 25.5%;
+    left: 231px;
     display: flex;
     justify-content: center;
     align-items: center;
