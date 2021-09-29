@@ -102,6 +102,11 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
+// https://blog.csdn.net/weixin_42402845/article/details/108334329
+const originPush = Router.prototype.replace
+Router.prototype.replace = function replace(location) {
+	return originPush.call(this, location).catch(err => err)
+}
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
