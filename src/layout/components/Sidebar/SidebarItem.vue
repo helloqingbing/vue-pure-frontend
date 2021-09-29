@@ -93,3 +93,12 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .el-menu {
+    .menu-wrapper {
+      height: 40px;
+      border: 1px solid red;
+
+    }
+  }
+</style>
