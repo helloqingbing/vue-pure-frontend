@@ -93,12 +93,17 @@ export default {
   }
 }
 </script>
+<!-- scss 预编译css，scoped 只对当前一个组件生效 -->
 <style lang="scss">
   .el-menu {
-    .menu-wrapper {
-      height: 40px;
-      border: 1px solid red;
-
+    .el-submenu__title,
+    .menu-wrapper > a > li {
+      line-height: 45px;
+      height: 45px;
+      font-size: 16px;
+    }
+    .menu-wrapper > a >.el-menu-item {
+      font-size: 16px;
     }
   }
 </style>

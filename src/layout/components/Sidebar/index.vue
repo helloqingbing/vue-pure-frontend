@@ -8,7 +8,7 @@
         :background-color=" $store.state.settings.themeStyle === 'light' ? variables.menuLightBg : variables.menuBg"
         :text-color="$store.state.settings.themeStyle === 'light' ? 'rgba(0,0,0,.65)' : '#fff'"
         :active-text-color="$store.state.settings.theme"
-        :unique-opened="true"
+        :unique-opened="false"
         :collapse-transition="true"
         mode="vertical"
       >
