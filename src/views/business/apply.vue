@@ -6,10 +6,8 @@
           <div slot="header" class="clearfix">
             <span>业务需求</span>
             <span class="business-header">
-              <i class="header-icon el-icon-view"></i>
-              <el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320948" type="success" target="_blank">RedKV业务接入参考</el-link>
-              <i class="header-icon el-icon-info"></i>
-              <el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320957" type="danger" target="_blank">RedKV申请规范</el-link>
+              <el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320948" type="success" target="_blank"><i class="header-icon el-icon-view"/>&nbsp;RedKV业务接入参考</el-link>
+              <el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320957" type="danger" target="_blank"><i class="header-icon el-icon-info"/>&nbsp;RedKV申请规范</el-link>
             </span>
           </div>
           <el-form :model="businessForm" :rules="rules" ref="business_form" label-position="right" label-width="80px">
@@ -411,13 +409,14 @@ export default {
     .box-card {
       .business-header {
         float: right;
+
+        a {
+          margin-right: 8px;
+          font-size: 14px;
+        }
       }
-      .clearfix:before, .clearfix:after {
-        display: table;
-        content: "";
-      }
-      .clearfix:after {
-        clear: both
+      .clearfix {
+        margin-top: -4px;
       }
     }
     .el-input-group__prepend {
