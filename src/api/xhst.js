@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import qs from 'qs'
 
-export function getXhstClusterList(data) {
+export function getXHSTreeFormTreeService(data) {
   return request({
     url: '/xhst/tree/platform',
     method: 'get',

@@ -50,6 +50,14 @@ module.exports = {
           '^/api': ''
         }
       },
+      '/xhst': {
+        target: 'http://tree.devops.xiaohongshu.com/api/v1/xhst',
+        changeOrigin:true,
+        ws: true,
+        pathRewrite: {
+          '^/xhst': ''
+        }
+      },
       '/cas': {
         target: "http://porch-api.int.sit.xiaohongshu.com/api/cas",
         changeOrigin: true,

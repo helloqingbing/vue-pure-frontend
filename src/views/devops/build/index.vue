@@ -1,8 +1,52 @@
 <template>
+	<div style="margin:20px">
+    <el-tabs v-model="activeName" @tab-click="handleClick" >
+      <el-tab-pane v-for="item in  tabMapOptions" :key="item.label" :label="item.label" :name="item.key">
+      </el-tab-pane>
+    </el-tabs>
+    <tabregister v-if="activeName == 'register-project'"></tabregister>
+    <tabbuild v-if="activeName == 'build-history'"></tabbuild>
+  </div>
 </template>
 
 <script>
+
+import Build from "./Build"
+import Register from "./Register"
+import waves from '@/directive/waves' // waves directive
+
+export default {
+  name: 'Build',
+  components: {
+    tabbuild: Build,
+    tabregister: Register
+  },
+  directives: { waves },
+  data() {
+    return {
+      tabMapOptions: [
+        { label: "注册分支", key: 'register-project'},
+        { label: "构建历史", key: 'build-history'}
+      ],
+      activeName: "register-project" // activeName 设置默认tab 对应name
+    }
+  },
+  methods: {
+    handleClick() {
+
+    },
+    updateActiveName(newName){
+      this.activeName = newName
+    }
+  },
+  provide(){
+    return{
+      updateActiveName:this.updateActiveName
+    }
+  }
+}
 </script>
 
 <style>
+
 </style>

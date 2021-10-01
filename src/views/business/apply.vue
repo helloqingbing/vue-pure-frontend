@@ -1,130 +1,200 @@
 <template>
   <BasicLayout>
     <template #wrapper>
-      <div class='business-panel'>
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>业务需求</span>
-            <span class="business-header">
-              <el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320948" type="success" target="_blank"><i class="header-icon el-icon-view"/>&nbsp;RedKV业务接入参考</el-link>
-              <el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320957" type="danger" target="_blank"><i class="header-icon el-icon-info"/>&nbsp;RedKV申请规范</el-link>
-            </span>
+      <el-collapse v-model="activeNames">
+        <el-collapse-item  class='business-panel' name="1">
+            <template slot="title">
+                <span class="left">业务需求</span>
+                <span class="right">
+                  <i class="el-icon-view"></i>&nbsp;<el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320948" type="success" target="_blank">RedKV业务接入参考</el-link>
+                  <i class="el-icon-info"></i>&nbsp;<el-link :underline="false" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=101320957" type="danger" target="_blank">RedKV申请规范</el-link>
+                </span>
+            </template>
+            <div class="business-form">
+              <el-form :model="businessForm" :rules="rules" ref="business_form" label-position="right" label-width="80px">
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item label="所属业务" prop="owner">
+                      <el-cascader ref="tree" v-model="businessForm.owner" :options="business" :props="{ expandTrigger: 'hover' }"  placeholder="选择服务树路径" @change="handleCas"></el-cascader>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="应用等级">
+                      <el-select v-model="businessForm.level" filterable default-first-option placeholder="请选择" >
+                        <el-option key="S0" label="S0" value="S0"></el-option>
+                        <el-option key="S1" label="S1" value="S1"></el-option>
+                        <el-option key="S2" label="S2" value="S2"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="应用名称" prop="name">
+                      <el-input placeholder="业务名称" v-model="businessForm.name" @blur="handleClusterName"><template slot="prepend">redkv-</template></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="紧急程度" prop="emergency">
+                        <el-select v-model="businessForm.emergency" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
+                          <el-option v-for="item in urgentlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item label="QPS" prop="qps">
+                      <el-select v-model="businessForm.qps" filterable allow-create default-first-option placeholder="RedKVQPS非业务QPS">
+                        <el-option v-for="item in qpslist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="平均延时" prop="latency">
+                        <el-select v-model="businessForm.latency" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
+                          <el-option v-for="item in latlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="P99" prop="p99">
+                      <el-select v-model="businessForm.p99" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
+                        <el-option v-for="item in p99list" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                    <el-col :span="6">
+                    <el-form-item label="数据总量" prop="size">
+                        <el-select v-model="businessForm.size" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
+                          <el-option v-for="item in datasizelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="6">
+                    <el-form-item label="集群命令" prop="cmd">
+                      <el-select v-model="businessForm.cmd" multiple allow-create filterable default-first-option  placeholder="请选择">
+                        <el-option v-for="item in cmdlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="配置主从" prop="master_slave">
+                      <el-radio-group v-model="businessForm.master_slave">
+                        <el-radio :label="1">是</el-radio>
+                        <el-radio :label="0">否</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="TTL" prop="ttl">
+                      <el-radio-group  v-model="businessForm.ttl">
+                        <el-radio :label="1">是</el-radio>
+                        <el-radio :label="0">否</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="读主写主" prop="rwm">
+                      <el-radio-group v-model="businessForm.rwm">
+                        <el-radio :label="1">是</el-radio>
+                        <el-radio :label="0">否</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-form-item label="补充说明" prop="info">
+                    <el-input v-model="businessForm.info" type="textarea" placeholder="业务介绍或其他需求补充"></el-input>
+                   </el-form-item>
+                </el-row>
+                <el-row>
+                  <el-form-item>
+                    <el-button type="primary" icon="el-icon-edit" size="mini" @click="submitBusiness('business_form')">提交</el-button>
+                    <el-button icon="el-icon-refresh" size="mini" @click="resetForm('business_form')">重置</el-button>
+                  </el-form-item>
+                </el-row>
+              </el-form>
           </div>
-          <el-form :model="businessForm" :rules="rules" ref="business_form" label-position="right" label-width="80px">
-            <el-row style="margin-bottom:8px;">
-              <el-col :span="6">
-                <el-form-item label="所属业务" prop="owner">
-                  <el-cascader ref="tree" v-model="businessForm.owner" :options="business" :props="{ expandTrigger: 'hover' }"  placeholder="选择服务树路径" @change="handleCas"></el-cascader>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="应用等级">
-                  <el-select v-model="businessForm.level" filterable default-first-option placeholder="请选择" >
-                    <el-option key="S0" label="S0" value="S0"></el-option>
-                    <el-option key="S1" label="S1" value="S1"></el-option>
-                    <el-option key="S2" label="S2" value="S2"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="应用名称" prop="name">
-                  <el-input placeholder="业务名称" v-model="businessForm.name" @blur="handleClusterName"><template slot="prepend">redkv-</template></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="紧急程度" prop="emergency">
-                    <el-select v-model="businessForm.emergency" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                      <el-option v-for="item in urgentlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row style="margin-bottom:8px;">
-              <el-col :span="6">
-                <el-form-item label="QPS" prop="qps">
-                  <el-select v-model="businessForm.qps" filterable allow-create default-first-option placeholder="RedKVQPS非业务QPS">
-                    <el-option v-for="item in qpslist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="平均延时" prop="latency">
-                    <el-select v-model="businessForm.latency" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                      <el-option v-for="item in latlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="P99" prop="p99">
-                  <el-select v-model="businessForm.p99" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                    <el-option v-for="item in p99list" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-                <el-col :span="6">
-                <el-form-item label="数据总量" prop="size">
-                    <el-select v-model="businessForm.size" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                      <el-option v-for="item in datasizelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row style="margin-bottom:8px;">
-              <el-col :span="6">
-                <el-form-item label="集群命令" prop="cmd">
-                  <el-select v-model="businessForm.cmd" multiple allow-create filterable default-first-option  placeholder="请选择">
-                    <el-option v-for="item in cmdlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="配置主从" prop="master_slave">
-                  <el-radio-group v-model="businessForm.master_slave">
-                    <el-radio :label="1">是</el-radio>
-                    <el-radio :label="0">否</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="TTL" prop="ttl">
-                  <el-radio-group v-model="businessForm.ttl">
-                    <el-radio :label="1">是</el-radio>
-                    <el-radio :label="0">否</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="读主写主" prop="rwm">
-                  <el-radio-group v-model="businessForm.rwm">
-                    <el-radio :label="1">是</el-radio>
-                    <el-radio :label="0">否</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row style="margin-bottom:8px;">
-              <el-form-item label="补充说明" prop="info"><el-input v-model="businessForm.info" type="textarea" placeholder="业务介绍或其他需求补充"></el-input></el-form-item>
-            </el-row>
-            <el-row style="margin-bottom:3px;">
-              <el-form-item>
-                <el-button type="primary" @click="submitBusiness('business_form')">提交</el-button>
-                <el-button @click="resetForm('business_form')">重置</el-button>
-              </el-form-item>
-            </el-row>
-          </el-form>
-        </el-card>
-      </div>
+        </el-collapse-item>
+      </el-collapse>
+      <el-card class="business-list-panel">
+        <el-input class="b-search" v-model="searchInput" prefix-icon="el-icon-search" clearable  placeholder="输入查询的字符"></el-input>
+        <el-table class="b-search-table" :header-cell-style="tableHeaderColor" border>
+          <el-table-column prop="create_time" label="任务ID" width="160px">
+            <template slot-scope="scope">
+              {{scope.row.create_time.replace("T", "").replace(/-/g,"").replace(/:/g,"")}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="name" label="名称" width="280">
+            <template slot-scope="scope">
+              <el-tag style="font:14px Monospace;padding:2px;word-wrap:break-all;">{{scope.row.name}}
+              <el-tooltip style="margin:0" effect="light" placement="right-end">
+                <i class="el-icon-info" v-show="scope.row.info!=''"/>
+                <p slot="content" style="margin:0" effect="light">{{scope.row.info}}</p>
+              </el-tooltip> </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="owner" label="所属业务"> </el-table-column>
+          <el-table-column prop="path" label="路径" >
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.path" style="font:14px Monospace;padding:2px;word-wrap:break-all;">{{scope.row.path}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="applicant" label="申请人" width="80px"></el-table-column>
+          <el-table-column prop="responser" label="审核人" width="80px"></el-table-column>
+          <el-table-column prop="status" label="状态" width="80px" align="center"> </el-table-column>
+          <el-table-column label="操作" width="100px" align="center">
+            <template slot-scope="scope">
+              <div v-if="role=='admin'">
+                <div v-if="scope.row.status=='审核中'">
+                  <el-button type="primary" plain @click="checkDetail(scope.row)">开始审批 </el-button>
+                </div>
+                <div v-else-if="scope.row.status=='已退回'">
+                  <el-button type="danger" plain @click="refineBusiness(scope.row)">修改申请 </el-button>
+                </div>
+                <div v-else>
+                  <el-button type="success" plain @click="checkDetail(scope.row)">查看详情 </el-button>
+                </div>
+              </div>
+              <div v-else>
+                <div v-if="scope.row.status=='已退回'">
+                  <el-button type="danger" plain @click="refineBusiness(scope.row)">修改申请 </el-button>
+                </div>
+                <div v-else>
+                  <el-button type="success" plain @click="checkDetail(scope.row)">查看详情 </el-button>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div style="margin:10px 0; float:right">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10,20, 50, 100]"
+            :page-size="pageSize"
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalSize">
+          </el-pagination>
+        </div>
+      </el-card>
     </template>
   </BasicLayout>
 </template>
 
 <script>
-//import { getXhstClusterList} from '@/api/xhst'
+import { getXHSTreeFormTreeService } from '@/api/xhst'
 //import { getBusiness, saveBusiness, updateBusiness, isValidClusterName} from '@/api/business'
 import { parse } from 'path-to-regexp'
+import variables from '@/styles/variables.scss';
+
 export default {
   data() {
     return {
+      activeNames: ['1'],
 	    radio: 1,
       xhstree:"",
       business:[],
@@ -243,11 +313,17 @@ export default {
       role:this.$store.state.user.role
     }
   },
-  /*mounted() {
+  mounted() {
     this.getXHSTree()
-    var that = this
-    that.getBusinessTask()
   },
+
+  computed: {
+    variables() {
+      return variables
+    }
+  },
+
+  /*
   created() {
     this.$set(this.temp, 'cmd', [])
     this.screen_width = document.documentElement.clientWidth;
@@ -264,10 +340,10 @@ export default {
       }
       return this.businessData
     }
-  },
+  },*/
   methods: {
     getXHSTree(){
-      getXhstClusterList().then(response => {
+      getXHSTreeFormTreeService().then(response => {
         var xhsTree = response.data.child
         for(var i = 0; i < xhsTree.length; i++) {
           xhsTree[i].children = xhsTree[i].child
@@ -286,6 +362,34 @@ export default {
         this.business=xhsTree
       })
     },
+
+    tableHeaderColor({row, column, rowIndex, columnIndex}) {
+      if(rowIndex == 0) {
+        return "background-color: " + variables.menuBg + ";color:white;height:30px;font-size:14px"
+      }
+    },
+
+    resetForm(formName){
+      this.$refs[formName].resetFields()
+    },
+
+    submitBusiness(formName){
+      this.$refs[formName].validate((valid) => {
+        if(!valid) return;
+        this.businessForm.cmd = this.businessForm.cmd.join(",")
+        this.businessForm.name = "redkv-" + this.businessForm.name
+        saveBusiness(this.businessForm).then(response => {
+          this.$message({
+            type:'success',
+            message: '提交成功'
+          });
+          this.$refs[formName].resetFields()
+          //this.getBusinessTask()
+        })
+      })
+    },
+  }/*,
+
     handleSizeChange(val) {
       this.currentPage = 1
       this.pageSize = val
@@ -399,26 +503,56 @@ export default {
 <style lang="scss">
   @import '@/styles/variables.scss';
   .business-panel {
-    .el-card__header {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
+    .el-form-item__error {
+      top: 25%;
+      right: 25% !important;
+      left: unset;
+    }
+    .business-form {
+      margin: 15px;
+      margin-bottom: -20px;
+    }
+
+    .el-card__header, .el-collapse-item__header {
       background-color: $menuBg !important;
       height: 40px;
       color: white;
       font-size: 16px;
     }
 
-    .box-card {
-      .business-header {
-        float: right;
+    .el-collapse-item__header {
+      .left {
+        left: 20px;
+        position: absolute;
+      }
+      .right {
+        right: 40px;
+        position: absolute;
 
-        a {
-          margin-right: 8px;
-          font-size: 14px;
+        i {
+          margin-left: 10px;
         }
       }
-      .clearfix {
-        margin-top: -4px;
+    }
+
+    .el-card__header {
+      .box-card {
+        .business-header {
+          float: right;
+
+          a {
+            margin-right: 8px;
+            font-size: 14px;
+          }
+        }
+        .clearfix {
+          margin-top: -4px;
+        }
       }
     }
+
     .el-input-group__prepend {
       padding: 5px;
       width: 50px;
@@ -431,5 +565,16 @@ export default {
     .dialog-data {
       padding: 0 20px;
     }
+  }
+  .business-list-panel {
+    margin-top: 6px;
+
+    .b-search {
+      margin: -5px 0 5px 0;
+    }
+
+    .b-search-table {
+    }
+
   }
 </style>

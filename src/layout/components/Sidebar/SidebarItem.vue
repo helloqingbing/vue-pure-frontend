@@ -100,10 +100,10 @@ export default {
     .menu-wrapper > a > li {
       line-height: 45px;
       height: 45px;
-      font-size: 16px;
+      font-size: 15px;
     }
     .menu-wrapper > a >.el-menu-item {
-      font-size: 16px;
+      font-size: 15px;
     }
   }
 </style>
