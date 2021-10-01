@@ -5,7 +5,7 @@
         <el-tabs v-model="activeName" @tab-click="handleClick" >
           <el-tab-pane v-for="item in  tabMapOptions" :key="item.key" :label="item.label" :name="item.key"></el-tab-pane>
         </el-tabs>
-        <dashboard v-if="activeName == 'tabs-dashboard'"></dashboard>
+        <dashboard v-if="activeName == 'tab-dashboard'"></dashboard>
         <corvus v-if="activeName == 'tab-corvus'"></corvus>
         <candy v-if="activeName == 'tab-candy'"></candy>
         <redkv v-if="activeName == 'tab-redkv'"></redkv>
@@ -31,10 +31,10 @@ export default {
   data() {
     return {
       tabMapOptions: [
-        { label: "Corvus报警", key: 'corvus', name: 'tab-corvus'},
-        { label: "RedKV集群", key: 'redkv', name: 'tab-redkv'},
-        { label: "探针报警", key: 'candy', name: 'tab-candy'},
-        { label: "报警大盘", key: 'dashboard', name: 'tabs-dashboard'}
+        { label: "报警大盘", key: 'tab-dashboard'},
+        { label: "Corvus报警", key: 'tab-corvus'},
+        { label: "RedKV集群", key: 'tab-redkv'},
+        { label: "探针报警", key: 'tab-candy'}
       ],
       activeName: "tab-dashboard" // activeName 设置默认tab 对应name
     }

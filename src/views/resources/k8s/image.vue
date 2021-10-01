@@ -1,6 +1,10 @@
 <template>
-  <div style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
-
+  <div class="resource-k8s-dashboard">
+    <BasicLayout>
+      <template #wrapper>
+        
+      </template>
+    </BasicLayout>
   </div>
 </template>
 
@@ -9,7 +13,7 @@
 import waves from '@/directive/waves' // waves directive
 
 export default {
-  name: "Group",
+  name: "Dashboard",
   directives: { waves },
   data () {
     return {

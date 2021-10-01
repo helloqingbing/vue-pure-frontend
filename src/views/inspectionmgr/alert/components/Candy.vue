@@ -1,11 +1,15 @@
 <template>
-  <div style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
-    即将开发完成
+  <div class="resource-k8s-dashboard">
+    <BasicLayout>
+      <template #wrapper>
 
+      </template>
+    </BasicLayout>
   </div>
 </template>
 
 <script>
+
 import waves from '@/directive/waves' // waves directive
 
 export default {
@@ -13,6 +17,7 @@ export default {
   directives: { waves },
   data () {
     return {
+
     }
   },
   computed: {

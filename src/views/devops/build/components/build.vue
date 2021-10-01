@@ -1,5 +1,5 @@
 <template>
-  <div style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
+  <div>
   <el-table
     :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
     border
@@ -95,6 +95,7 @@ import 'codemirror/theme/monokai.css'
 //import {getBuiltGit, getBuildLog, checkBuildStutas} from '@/api/build'
 
 export default {
+  name: "Build",
   components: {
     codemirror
   },

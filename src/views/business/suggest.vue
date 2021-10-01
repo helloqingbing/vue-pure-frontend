@@ -23,8 +23,8 @@
               <el-input v-model="temp.content" type="textarea" :rows="4" placeholder="建议和意见" height="300"></el-input>
             </el-form-item>
             <el-form-item align="left">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="submitFeedback('feedback')">提交</el-button>
-              <el-button icon="el-icon-refresh" size="mini" @click="resetForm('feedback')">重置</el-button>
+              <el-button type="primary" icon="el-icon-edit" size="small" @click="submitFeedback('feedback')">提交</el-button>
+              <el-button icon="el-icon-refresh" size="small" @click="resetForm('feedback')">重置</el-button>
             </el-form-item>
           </el-form>
         </el-card>

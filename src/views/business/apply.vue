@@ -110,8 +110,8 @@
                 </el-row>
                 <el-row>
                   <el-form-item>
-                    <el-button type="primary" icon="el-icon-edit" size="mini" @click="submitBusiness('business_form')">提交</el-button>
-                    <el-button icon="el-icon-refresh" size="mini" @click="resetForm('business_form')">重置</el-button>
+                    <el-button type="primary" icon="el-icon-edit" size="small" @click="submitBusiness('business_form')">提交</el-button>
+                    <el-button icon="el-icon-refresh" size="small" @click="resetForm('business_form')">重置</el-button>
                   </el-form-item>
                 </el-row>
               </el-form>

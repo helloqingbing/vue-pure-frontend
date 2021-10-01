@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="filter-container">
-      <el-button v-waves type="primary" icon="el-icon-plus" @click="handlerRegister">注册</el-button>
-      <el-input v-model="searchInput" prefix-icon="el-icon-search" clearable style="width:300px;margin-left:10px" placeholder="" />
+      <el-button v-waves type="primary" icon="el-icon-plus" size="small" @click="handlerRegister">注册</el-button>
+      <el-input v-model="searchInput" size="small" prefix-icon="el-icon-search" clearable style="width:60%;margin-left:10px" placeholder="" />
     </div>
     <div>
-      <div style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
+      <div>
         <el-table
           :data="repoFilterData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
           border
@@ -105,6 +105,7 @@ import waves from '@/directive/waves' // waves directive
 //import { getBranch, buildGit } from '@/api/register'
 
 export default {
+  name: "Register",
   directives: { waves },
   inject:['updateActiveName'],
   data() {

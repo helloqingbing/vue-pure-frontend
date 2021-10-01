@@ -2,7 +2,7 @@
   <div class="resource-k8s-dashboard">
     <BasicLayout>
       <template #wrapper>
-        
+
       </template>
     </BasicLayout>
   </div>
@@ -13,7 +13,7 @@
 import waves from '@/directive/waves' // waves directive
 
 export default {
-  name: "Dashboard",
+  name: "Image",
   directives: { waves },
   data () {
     return {

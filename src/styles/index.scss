@@ -202,3 +202,12 @@ aside {
 .el-card + .el-card{
   margin-top: 10px;
 }
+.el-form-item{
+    margin-bottom: 6px;
+}
+
+.el-form-item__error {
+  top: 25%;
+  right: 30px !important;
+  left: unset;
+}
