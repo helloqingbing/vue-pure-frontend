@@ -1,24 +1,28 @@
 <template>
-  <div class="file">
+  <div class="business-assoc">
     <BasicLayout>
       <template #wrapper>
         <DragColumn>
           <div slot="left" class="left">
             <el-card>
               <div id="serviceChart" :style="{width: '210px', height: '200px'}"></div>
-              <el-input placeholder="输入关键字进行过滤" v-model="filterText" clearable style="margin: 10px 0"></el-input>
-              <el-tree
-                v-loading="loading"
-                :data="business1"
-                node-key="uid"
-                ref="tree"
-                :default-expanded-keys="['f7801890-1dc9-11eb-b701-0a58ac195f2d']"
-                highlight-current
-                :props="defaultProps"
-                :render-content="renderContent"
-                :filter-node-method="filterNode"
-                @node-click="handleNodeClick">
-              </el-tree>
+              <el-divider></el-divider>
+              <el-input placeholder="输入关键字进行过滤" size="mini" v-model="filterText" clearable style="margin: 10px 0"></el-input>
+              <div class="tree-scroll">
+                <el-tree
+                  class="flow-tree"
+                  v-loading="loading"
+                  :data="business1"
+                  node-key="uid"
+                  ref="tree"
+                  :default-expanded-keys="['f7801890-1dc9-11eb-b701-0a58ac195f2d']"
+                  highlight-current
+                  :props="defaultProps"
+                  :render-content="renderContent"
+                  :filter-node-method="filterNode"
+                  @node-click="handleNodeClick">
+                </el-tree>
+              </div>
             </el-card>
           </div>
           <div slot="right" class="right">
@@ -93,7 +97,7 @@
 import DragColumn from '@/components/DragColumn/index'
 import Left from '@/components/FileManage/Left'
 import Right from '@/components/FileManage/Right'
-import {getXhstClusterList, getXhstClusterHosts } from '@/api/xhst'
+import {getXHSTreeFormTreeService, getXhstClusterHosts } from '@/api/xhst'
 import {getBusinessByUid, getBusinessByPid, getFinishedBusiness, getBusinessByLevel, updateInfoByName} from '@/api/business'
 export default {
   name: 'Dashboard',
@@ -104,7 +108,7 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      loading: true,
       business1: [],
       searchcluster: "",
       business:[{'alias':'小红书', "name": 'xhs', 'uid':"f7801890-1dc9-11eb-b701-0a58ac195f2d", "pid":"", "child":[]}],
@@ -138,7 +142,7 @@ export default {
     }
   },
   mounted() {
-
+    this.drawLine();
   },
   computed: {
     clusterFilterData() {
@@ -154,10 +158,12 @@ export default {
     }
   },
   created() {
-    getXhstClusterList().then(response => {
+    getXHSTreeFormTreeService().then(response => {
       this.loading = false
       var xhsTree = response.data.child
-      getFinishedBusiness().then(response =>{
+      this.business[0].child = xhsTree
+      this.business1 = this.business
+      /*getFinishedBusiness().then(response =>{
         this.tableData = response.data.business
         var length = this.tableData.length
         this.business[0].alias = this.business[0].alias + " " //这里要加个空格，不加的话数据显示不出来，why?
@@ -223,7 +229,7 @@ export default {
         this.expand = this.business[0].child
         this.business1 = this.business
         this.drawLine();
-      })
+      })*/
     })
   },
   methods:{
@@ -233,6 +239,11 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('serviceChart'))
       // 绘制图表
       myChart.setOption({
+        title: {
+          text: 'RedKV服务集群',
+          subtext: '等级分布',
+          left: 'center'
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -244,7 +255,7 @@ export default {
         series: [{
           name: '服务比例',
           type: 'pie',
-          radius: '50%',
+          radius: '40%',
           labelLine: {
             length: 10,
           },
@@ -252,9 +263,9 @@ export default {
             formatter: '{b}:{c}',
           },
           data: [
-            {value: this.level.s0, name: 'S0'},
-            {value: this.level.s1, name: 'S1'},
-            {value: this.level.s2, name: 'S2'}
+            {value: 20, name: 'S0'},
+            {value: 40, name: 'S1'},
+            {value: 40, name: 'S2'}
           ],
           emphasis: {
             itemStyle: {
@@ -265,44 +276,16 @@ export default {
           },
         }]
       });
-      myChart.on('click', function(item) {
+    },
+      /*myChart.on('click', function(item) {
         let currSelectName = item.name
         getBusinessByLevel(currSelectName).then(response =>{
           that.tableData = response.data.business
         })
-      })
-    },
-    getTableData(){
-      getFinishedBusiness().then(response =>{
-        this.tableData = response.data.business
-      })
-    },
-    handleNodeClick(data){
-      this.uid = data.uid
-      if(data.pid != 'f7801890-1dc9-11eb-b701-0a58ac195f2d' &&data.pid != ''){
-        getBusinessByUid(this.uid).then(response =>{
-          this.tableData = response.data.business
-        })
-      }else if(data.pid != ''){
-        getBusinessByPid(this.uid).then(response =>{
-          this.tableData = response.data.business
-        })
-      }else{
-        getFinishedBusiness().then(response =>{
-          this.tableData = response.data.business
-        })
-      }
-    },
+      })*/
     filterNode(value, data) {
       if (!value) return true;
       return data.alias.indexOf(value) !== -1;
-    },
-    handleSizeChange(val) {
-      this.currentPage = 1
-      this.pageSize = val
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val;
     },
     renderContent(h, { node, data, store }) {
       return (
@@ -313,6 +296,53 @@ export default {
         </div>
       );
     },
+    handleNodeClick(data){
+      this.uid = data.uid
+      if(data.pid != 'f7801890-1dc9-11eb-b701-0a58ac195f2d' &&data.pid != ''){
+        /*getBusinessByUid(this.uid).then(response =>{
+          this.tableData = response.data.business
+        })*/
+      }else if(data.pid != ''){
+        /*getBusinessByPid(this.uid).then(response =>{
+          this.tableData = response.data.business
+        })*/
+      }else{
+        /*getFinishedBusiness().then(response =>{
+          this.tableData = response.data.business
+        })*/
+      }
+    },
+    updateInfo() {
+      this.dialogVisible = false
+      var updateParams = {
+        'name': this.temp.name,
+        'info': this.temp.info,
+        'config_data':JSON.stringify(this.temp.config_data)
+      }
+      /*updateInfoByName(updateParams).then(response => {
+        this.getTableData()
+        this.$message({
+          type:'success',
+          message: '提交成功'
+        });
+      })*/
+    },
+    handleSizeChange(val) {
+      this.currentPage = 1
+      this.pageSize = val
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
+    /*getTableData(){
+      getFinishedBusiness().then(response =>{
+        this.tableData = response.data.business
+      })
+    },
+
+
+
+
     handleS0(){
       getBusinessByLevel('S0').then(response =>{
         this.tableData = response.data.business
@@ -340,33 +370,37 @@ export default {
       this.temp.info = data.info
       this.temp.config_data = JSON.parse(data.config_data)
     },
-    updateInfo(){
-      this.dialogVisible = false
-      var updateParams = {
-        'name': this.temp.name,
-        'info': this.temp.info,
-        'config_data':JSON.stringify(this.temp.config_data)
-      }
-      updateInfoByName(updateParams).then(response => {
-        this.getTableData()
-        this.$message({
-          type:'success',
-          message: '提交成功'
-        });
-      })
-      //*/
-    }
+
+
+    }*/
   }
 }
 </script>
 
 <style lang="scss">
-  .file .el-card {
-    height: calc(100vh - 113px);
-  }
+  .business-assoc {
+    .el-card {
+      height: calc(100vh - 113px);
+      margin: 0;
+    }
+    .left .el-card__body {
+      margin: -15px;
+    }
 
-  .alert, .input{
-    margin-bottom: 10px;
-  }
+    .left .flow-tree {
+      overflow: auto;
+      height: calc(100vh - 313px);
+    }
+    .left .tree-scroll {
+      height: 100%;
 
+    }
+    .alert, .input{
+      margin-bottom: 10px;
+    }
+
+    .el-divider {
+      margin: 3px 0;
+    }
+  }
 </style>

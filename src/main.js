@@ -78,6 +78,12 @@ Vue.use(Element, {
 import VueDND from 'awe-dnd'
 Vue.use(VueDND)
 
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+
+import VueSplit from 'vue-split-panel'
+Vue.use(VueSplit)
+
 import 'remixicon/fonts/remixicon.css'
 
 // register global utility filters

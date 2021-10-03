@@ -194,6 +194,18 @@ aside {
 .el-card__header{
   padding: 15px!important;
   box-sizing: border-box;
+  background-color: #304156;
+  color: white;
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+
 }
 .el-card__body{
   padding: 20px!important;
@@ -202,6 +214,7 @@ aside {
 .el-card + .el-card{
   margin-top: 10px;
 }
+
 .el-form-item{
     margin-bottom: 6px;
 }

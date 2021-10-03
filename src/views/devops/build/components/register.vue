@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <div class="filter-container">
-      <el-button v-waves type="primary" icon="el-icon-plus" size="small" @click="handlerRegister">注册</el-button>
-      <el-input v-model="searchInput" size="small" prefix-icon="el-icon-search" clearable style="width:60%;margin-left:10px" placeholder="" />
-    </div>
-    <div>
-      <div>
+  <div class="devops-build-register">
+    <BasicLayout>
+      <template #wrapper>
+        <div class="filter-container">
+          <el-input v-model="searchInput" size="small" prefix-icon="el-icon-search" clearable placeholder="">
+            <el-button slot="prepend" v-waves icon="el-icon-plus" size="small" @click="handlerRegister">注册</el-button>
+          </el-input>
+        </div>
         <el-table
           :data="repoFilterData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
           border
           :header-cell-style="{background: '#304156', color:'white', height: '30px'}"
-          style="width: 100%;margin-top:10px" >
+        >
           <el-table-column
             prop="id"
             label="编号"
@@ -57,45 +58,45 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
-      <div style="margin:10px 0; float:right">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[10,20, 50, 100]"
-          :page-size="pageSize"
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="totalSize">
-        </el-pagination>
-      </div>
-      <el-dialog :title="textMap.register" :visible.sync="dialogFormVisible" customClass="custom-dialog">
-        <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="100px" style="width: 400px;margin:-20px 30px;">
-          <el-form-item label="仓库名称" prop="title" type="string"><el-input v-model="temp.title" @blur="handlerOnblur" placeholder="RedKV/RedKV"/></el-form-item>
-          <el-form-item label="分支" prop="branch" type='string'>
-            <el-select v-model="temp.branch" placeholder="选择分支" filterable style="min-width:300px">
-              <el-option
-                v-for="item in options"
-                :key="item.label"
-                :label="item.value"
-                :value="item.value">
-              </el-option>
-            </el-select>
-
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-divider content-position="left"></el-divider>
-          <el-button @click="dialogFormVisible = false">
-            取消
-          </el-button>
-          <el-button type="primary" size="mini" plain @click="createData('dataForm')">
-            保存
-          </el-button>
+        <div class="pagination">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10,20, 50, 100]"
+            :page-size="pageSize"
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalSize">
+          </el-pagination>
         </div>
-      </el-dialog>
-    </div>
+        <el-dialog :title="textMap.register" :visible.sync="dialogFormVisible" customClass="custom-dialog">
+          <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="100px" style="width: 400px;margin:-20px 30px;">
+            <el-form-item label="仓库名称" prop="title" type="string"><el-input v-model="temp.title" @blur="handlerOnblur" placeholder="RedKV/RedKV"/></el-form-item>
+            <el-form-item label="分支" prop="branch" type='string'>
+              <el-select v-model="temp.branch" placeholder="选择分支" filterable style="min-width:300px">
+                <el-option
+                  v-for="item in options"
+                  :key="item.label"
+                  :label="item.value"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-divider content-position="left"></el-divider>
+            <el-button @click="dialogFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" size="mini" plain @click="createData('dataForm')">
+              保存
+            </el-button>
+          </div>
+        </el-dialog>
+      </template>
+    </BasicLayout>
   </div>
 </template>
 
@@ -157,7 +158,7 @@ export default {
     //this.getRegister()
   },
   methods: {
-    /*
+
     handlerRegister() {
       this.resetTemp()
       this.dialogStatus = 'create'
@@ -190,7 +191,7 @@ export default {
       buildGit(buildParams).then(response => {
         this.updateActiveName('build-history')
       })
-      //this.$router.push({path:'/devops/build/history'})
+      this.$router.push({path:'/devops/build/history'})
 
     },
     handlerOnblur() {
@@ -232,13 +233,25 @@ export default {
           this.dialogFormVisible = false
         })
       })
-
-    },*/
+    }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+.devops-build-register {
+  .filter-container {
+    .el-button {
+      background-color: #409EFF;
+      color:white
+    }
+  }
+  .pagination {
+    float: right;
+    margin:10px 0
+  }
+}
+
 .custom-dialog{
   width: 500px;
 }

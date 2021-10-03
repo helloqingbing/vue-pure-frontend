@@ -35,7 +35,7 @@
                   <el-col :span="6">
                     <el-form-item label="紧急程度" prop="emergency">
                         <el-select v-model="businessForm.emergency" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                          <el-option v-for="item in urgentlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          <el-option v-for="item in urgentList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
                   </el-col>
@@ -44,28 +44,28 @@
                   <el-col :span="6">
                     <el-form-item label="QPS" prop="qps">
                       <el-select v-model="businessForm.qps" filterable allow-create default-first-option placeholder="RedKVQPS非业务QPS">
-                        <el-option v-for="item in qpslist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        <el-option v-for="item in qpsList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
                     <el-form-item label="平均延时" prop="latency">
                         <el-select v-model="businessForm.latency" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                          <el-option v-for="item in latlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          <el-option v-for="item in latList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
                     <el-form-item label="P99" prop="p99">
                       <el-select v-model="businessForm.p99" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                        <el-option v-for="item in p99list" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        <el-option v-for="item in p99List" :key="item.value" :label="item.label" :value="item.value"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
                     <el-col :span="6">
                     <el-form-item label="数据总量" prop="size">
                         <el-select v-model="businessForm.size" filterable allow-create default-first-option placeholder="可以选择，也可以自定义">
-                          <el-option v-for="item in datasizelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          <el-option v-for="item in datasizeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
                   </el-col>
@@ -74,7 +74,7 @@
                   <el-col :span="6">
                     <el-form-item label="集群命令" prop="cmd">
                       <el-select v-model="businessForm.cmd" multiple allow-create filterable default-first-option  placeholder="请选择">
-                        <el-option v-for="item in cmdlist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        <el-option v-for="item in cmdList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
@@ -187,7 +187,7 @@
 
 <script>
 import { getXHSTreeFormTreeService } from '@/api/xhst'
-//import { getBusiness, saveBusiness, updateBusiness, isValidClusterName} from '@/api/business'
+import { getBusiness, saveBusiness, updateBusiness, isValidClusterName} from '@/api/business'
 import { parse } from 'path-to-regexp'
 import variables from '@/styles/variables.scss';
 
@@ -196,9 +196,9 @@ export default {
     return {
       activeNames: ['1'],
 	    radio: 1,
-      xhstree:"",
+      xhsTree:"",
       business:[],
-      qpslist: [
+      qpsList: [
         { value: '< 1w', label: '< 1w' },
         { value: '[1w, 10w)', label: '[1w, 10w)' },
         { value: '[10w, 20w)', label: '[10w, 20w)' },
@@ -213,7 +213,7 @@ export default {
         { value: '[500w, 600w)', label: '[500w, 600w)' },
         { value: '> 600w', label: '> 600w' }
       ],
-      latlist: [
+      latList: [
         { value: '< 1ms', label: '< 1ms' },
         { value: '[1ms, 5ms)', label: '[1ms, 5ms)' },
         { value: '[5ms, 10ms)', label: '[5ms, 10ms)' },
@@ -222,7 +222,7 @@ export default {
         { value: '>=50ms', label: '>=50ms' }
       ],
 	    p99:"",
-      p99list: [
+      p99List: [
         { value: '< 1ms', label: '< 1ms' },
         { value: '[1ms, 5ms)', label: '[1ms, 5ms)' },
         { value: '[5ms, 10ms)', label: '[5ms, 10ms)' },
@@ -231,7 +231,7 @@ export default {
         { value: '>=50ms', label: '>=50ms' }
       ],
 	    datasize:"",
-      datasizelist: [
+      datasizeList: [
         { value: '< 500GB', label: '< 500GB' },
         { value: '[500GB, 1TB)', label: '[500GB, 1TB)' },
         { value: '[1TB, 2TB)', label: '[1TB, 2TB)' },
@@ -246,13 +246,13 @@ export default {
         { value: '>=100TB', label: '>=100TB' }
       ],
       cmd:"",
-      cmdlist: [
+      cmdList: [
         { value: 'string', label: 'string' },
         { value: 'hash', label: 'hash' },
         { value: 'zset', label: 'zset' },
       ],
 	    urgent:"",
-      urgentlist: [
+      urgentList: [
         { value: '2 天', label: '2 天' },
         { value: '1 周', label: '1 周内' },
         { value: '2 周', label: '2 周内' }
@@ -262,7 +262,7 @@ export default {
         skip: 0,
         limit: 10
       },
-      screen_width: 0,
+      screenWidth: 0,
       currentPage: 1,
       pageSize: 20,
       businessData:[],
@@ -308,7 +308,6 @@ export default {
       user:this.$store.state.user.name,
       dialogVisible:false,
       dialogData:{
-
       },
       role:this.$store.state.user.role
     }
@@ -322,11 +321,8 @@ export default {
       return variables
     }
   },
-
-  /*
   created() {
-    this.$set(this.temp, 'cmd', [])
-    this.screen_width = document.documentElement.clientWidth;
+    this.screenWidth = document.documentElement.clientWidth;
   },
   computed: {
     businessFilterData() {
@@ -340,7 +336,7 @@ export default {
       }
       return this.businessData
     }
-  },*/
+  },
   methods: {
     getXHSTree(){
       getXHSTreeFormTreeService().then(response => {
@@ -365,7 +361,7 @@ export default {
 
     tableHeaderColor({row, column, rowIndex, columnIndex}) {
       if(rowIndex == 0) {
-        return "background-color: " + variables.menuBg + ";color:white;height:30px;font-size:14px"
+        return "background-color: " + variables.menuBg + "; color:white; height:30px; font-size:14px"
       }
     },
 
@@ -384,12 +380,26 @@ export default {
             message: '提交成功'
           });
           this.$refs[formName].resetFields()
-          //this.getBusinessTask()
+          this.getBusinessTask()
         })
       })
     },
-  }/*,
+    handleCas(){
+      var treeNodes = this.$refs.tree.getCheckedNodes(true)
+      this.businessForm.uid = treeNodes[0].data.uid,
+      this.businessForm.pid = treeNodes[0].data.pid,
+      this.businessForm.path = treeNodes[0].data.path.substr(4)
+    },
+    handleClusterName(){
+      var queryName = "redkv-" + this.businessForm.name
+      var that = this
+      isValidClusterName(queryName).then(response => {
 
+      },
+      error => {
+        that.businessForm.name = ''
+      })
+    },
     handleSizeChange(val) {
       this.currentPage = 1
       this.pageSize = val
@@ -398,12 +408,12 @@ export default {
       this.currentPage = val;
     },
     getBusinessTask(){
-      if(this.role == 'admin'){
+      if(this.role == 'admin') {
         getBusiness().then(response => {
           this.businessData = response.data.business
           this.totalSize = this.businessData.length
         })
-      }else{
+      } else {
         getBusiness().then(response => {
           this.businessData1 = response.data.business
           this.businessData = []
@@ -415,16 +425,6 @@ export default {
           this.totalSize = this.businessData.length
         })
       }
-    },
-    handleClusterName(){
-      var queryName = "redkv-" + this.temp.name
-      var that = this
-      isValidClusterName(queryName).then(response => {
-
-      },
-      error => {
-        that.temp.name = ''
-      })
     },
     submitBusiness(formName){
       this.$refs[formName].validate((valid) => {
@@ -442,17 +442,6 @@ export default {
         })
       })
     },
-    resetForm(formName){
-      this.$refs[formName].resetFields()
-      this.temp.info = ""
-    },
-    handleCas(){
-      var treeNodes = this.$refs.tree.getCheckedNodes(true)
-      this.temp.uid = treeNodes[0].data.uid,
-      this.temp.pid = treeNodes[0].data.pid,
-      this.temp.path = treeNodes[0].data.path.substr(4)
-    },
-
     checkDetail(data){
       this.$router.push({
         meta: { title:"业务审批"},
@@ -494,10 +483,9 @@ export default {
         }).catch((err) => {
           this.dialogData.cmd = this.dialogData.cmd.split(",")
         })
-
       })
     }
-  }*/
+  }
 }
 </script>
 <style lang="scss">

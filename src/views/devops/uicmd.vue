@@ -131,13 +131,13 @@ export default {
         appName: 'redkvops',
         userName: user,
       }
-      hasProperty(roleParams).then(response => {
+      /*hasProperty(roleParams).then(response => {
         if(response.data.length > 0){
           this.role = 'admin'
         }else{
           this.role = ''
         }
-      })
+      })*/
     },
     handleCluster(){
       getCluster().then(response =>{

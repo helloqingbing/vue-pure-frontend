@@ -147,13 +147,13 @@ export default {
       }
     },
     created() {
-      this.getChangfreeList()
+      //this.getChangfreeList()
     },
     mounted() {
-      this.timer = setInterval(this.getChangfreeList, 10000);
+      //this.timer = setInterval(this.getChangfreeList, 10000);
     },
     beforeDestroy() {
-      clearInterval(this.timer);
+      //clearInterval(this.timer);
     },
     methods:{
       handleSizeChange(val) {
