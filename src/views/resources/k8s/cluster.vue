@@ -2,13 +2,13 @@
   <div class="resource-k8s-cluster">
     <BasicLayout>
       <template #wrapper>
-        <el-card class="action">
-          <el-row :gutter="10" class="mb8">
+        <el-card>
+          <el-row :gutter="10" class="action">
             <el-col :span="1.5">
               <el-button
                 type="primary"
                 icon="el-icon-plus"
-                size="mini"
+                size="small"
                 @click="handleAdd"
               >新增</el-button>
             </el-col>
@@ -16,41 +16,40 @@
               <el-button
                 type="warning"
                 icon="el-icon-download"
-                size="mini"
+                size="small"
                 @click="handleExport"
               >导出</el-button>
             </el-col>
           </el-row>
+          <el-row :gutter="10">
+            <draggable v-model="myArray" draggable=".item">
+                <div v-for="element in myArray" :key="element.id" class="item">
+                    <el-col :sm="24" :md="8">
+                      <el-card shadow="never">
+                        <div slot="header" class="clearfix">
+                          <span>{{element.title}}</span>
+                        </div>
+                        <div class="monitor">
+                          <div class="monitor-header" style="text-align: center;">
+                            <el-progress :color="element.c" type="circle" :percentage="element.data" />&nbsp;&nbsp;
+                            <el-progress :color="element.c" type="circle" :percentage="element.data" />
+                          </div>
+                          <div class="monitor-footer">
+                            <Cell label="机器台数" :value="element.l1" border/>
+                            <Cell label="服务总数" :value="element.l2" border/>
+                            <Cell label="厂商" :value="element.l2" border/>
+                            <Cell label="AZone" :value="element.l2" border/>
+                            <Cell label="NameSpace" :value="element.l2" border/>
+                            <Cell label="Env" :value="element.l2" border/>
+                            <Cell label="CBS" :value="element.l2" border/>
+                          </div>
+                        </div>
+                      </el-card>
+                    </el-col>
+                </div>
+            </draggable>
+          </el-row>
         </el-card>
-        <el-row :gutter="10" class="mb10">
-          <draggable v-model="myArray" draggable=".item">
-              <div v-for="element in myArray" :key="element.id" class="item">
-                  <el-col :sm="24" :md="8">
-                    <el-card class="box-card">
-                      <div slot="header" class="clearfix">
-                        <span>{{element.title}}</span>
-                      </div>
-                      <div class="monitor">
-                        <div class="monitor-header" style="text-align: center;">
-                          <el-progress :color="element.c" type="circle" :percentage="element.data" />&nbsp;&nbsp;
-                          <el-progress :color="element.c" type="circle" :percentage="element.data" />
-                        </div>
-                        <div class="monitor-footer">
-                          <Cell label="机器台数" :value="element.l1" border/>
-                          <Cell label="服务总数" :value="element.l2" border/>
-                          <Cell label="厂商" :value="element.l2" border/>
-                          <Cell label="AZone" :value="element.l2" border/>
-                          <Cell label="NameSpace" :value="element.l2" border/>
-                          <Cell label="Env" :value="element.l2" border/>
-                          <Cell label="CBS" :value="element.l2" border/>
-                          <Cell label="Server" :value="element.l2" border/>
-                        </div>
-                      </div>
-                    </el-card>
-                  </el-col>
-              </div>
-          </draggable>
-        </el-row>
       </template>
     </BasicLayout>
   </div>
@@ -116,11 +115,14 @@ export default {
 <style lang="scss">
 .resource-k8s-cluster {
   .action {
-    margin-bottom: 6px;
+    margin-bottom: 15px;
   }
-  .el-card__body .el-row {
-    padding: 0;
-    margin: 0;
+  .clearfix:before, .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
   }
 }
 </style>
