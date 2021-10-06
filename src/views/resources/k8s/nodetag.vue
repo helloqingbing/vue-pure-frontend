@@ -344,6 +344,10 @@ export default {
         color: #FFFFFF;
         border-bottom: 1px solid #D1DBE5;
       }
+      .el-dialog__headerbtn, .el-icon-close {
+        margin-top: -5px;
+        color: white;
+      }
       ::v-deep .el-dialog__footer {
         padding: 10px;
         border-top: 1px solid #D1DBE5;

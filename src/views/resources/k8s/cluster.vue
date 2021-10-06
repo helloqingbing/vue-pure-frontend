@@ -12,7 +12,7 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-dialog :title="'新增K8S集群'" :visible.sync="k8sDialogVisible" :fullscreen="false" width="500px">
+            <el-dialog v-dialogDrag :title="'新增K8S集群'" :visible.sync="k8sDialogVisible" :fullscreen="false" width="500px">
               <el-form :model="k8sCluster" :rules="rules" ref="k8sClusterForm" label-position="right" label-width="80px">
                 <el-form-item label="集群名称" prop="clusterName">
                   <el-input v-model="k8sCluster.clusterName"></el-input>
@@ -166,7 +166,10 @@ export default {
       padding: 10px;
       background-color: #304156;
       color: white;
-
+      .el-dialog__headerbtn, .el-icon-close {
+        margin-top: -5px;
+        color: white;
+      }
       .el-dialog__title {
         color: white;
       }

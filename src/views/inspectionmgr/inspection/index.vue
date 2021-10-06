@@ -1,10 +1,21 @@
 
 <template>
-  <div>
+  <div class="inspectionmgr-inspection">
     <BasicLayout>
       <template #wrapper>
-        <el-card class="box-card">
-          <el-form ref="queryForm" :model="queryParams" :inline="true" label-position="left" label-width="68px">
+        <el-card>
+          <el-row :gutter="10" class="mb8">
+            <el-col :span="1.5">
+              <el-button type="primary" icon="el-icon-plus" size="small" @click="handleAdd">新增</el-button>
+            </el-col>
+            <el-col :span="1.5">
+               <el-button type="success" icon="el-icon-edit" size="small" :disabled="single" @click="handleUpdate">修改</el-button>
+            </el-col>
+            <el-col :span="1.5">
+              <el-button type="danger" icon="el-icon-delete" size="small" :disabled="multiple" @click="handleDelete" >删除</el-button>
+            </el-col>
+          </el-row>
+          <el-form ref="queryForm" :model="queryParams" :inline="true" label-position="right" label-width="68px">
             <el-form-item label="名称" prop="jobName">
               <el-input
                 v-model="queryParams.jobName"
@@ -50,53 +61,6 @@
               <el-button icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
             </el-form-item>
           </el-form>
-
-          <el-row :gutter="10" class="mb8">
-            <el-col :span="1.5">
-              <el-button
-
-                type="primary"
-                icon="el-icon-plus"
-                size="small"
-                @click="handleAdd"
-              >新增
-              </el-button>
-            </el-col>
-            <el-col :span="1.5">
-              <el-button
-
-                type="success"
-                icon="el-icon-edit"
-                size="small"
-                :disabled="single"
-                @click="handleUpdate"
-              >修改
-              </el-button>
-            </el-col>
-            <el-col :span="1.5">
-              <el-button
-
-                type="danger"
-                icon="el-icon-delete"
-                size="small"
-                :disabled="multiple"
-                @click="handleDelete"
-              >删除
-              </el-button>
-            </el-col>
-            <el-col :span="1.5">
-              <el-button
-
-                type="danger"
-                icon="el-icon-delete"
-                size="small"
-                @click="handleLog"
-              >日志
-              </el-button>
-
-            </el-col>
-          </el-row>
-
           <el-table v-loading="loading" :data="sysjobList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column
@@ -194,7 +158,7 @@
           />
 
           <!-- 添加或修改对话框 -->
-          <el-dialog v-dialogDrag :title="title" :visible.sync="open" width="700px" append-to-body>
+          <el-dialog v-dialogDrag :title="title" :visible.sync="open" width="700px">
             <el-form ref="form" :model="form" :rules="rules" label-width="120px">
               <el-row>
                 <el-col :span="12">
@@ -308,11 +272,10 @@
               </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
-              <el-button type="primary" @click="submitForm">确 定</el-button>
-              <el-button @click="cancel">取 消</el-button>
+              <el-button size="small" type="primary" @click="submitForm">确 定</el-button>
+              <el-button size="small" @click="cancel">取 消</el-button>
             </div>
           </el-dialog>
-
         </el-card>
       </template>
     </BasicLayout>
@@ -549,10 +512,34 @@ export default {
           this.msgError(response.msg)
         }
       }).catch(function() {})
-    },
-    handleLog() {
-      this.$router.push({ name: 'job_log', params: { }})
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.inspectionmgr-inspection {
+  .el-dialog__wrapper {
+    ::v-deep .el-dialog__header {
+      padding: 10px;
+      background-color: #304156;
+      color: white;
+
+      .el-dialog__headerbtn, .el-icon-close {
+        margin-top: -5px;
+        color: white;
+      }
+      .el-dialog__title {
+        color: white;
+      }
+    }
+    ::v-deep .el-dialog__footer {
+      padding: 10px;
+      border-top: 1px solid #D1DBE5;
+    }
+    ::v-deep .el-dialog__body {
+      padding: 20px 40px;
+    }
+  }
+}
+</style>

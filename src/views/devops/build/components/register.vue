@@ -43,7 +43,7 @@
           :title="textMap.register"
           :visible.sync="dialogFormVisible"
           width="500px"
-          :show-close="false"
+          v-dialogDrag
         >
           <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="100px" style="width: 400px;margin:-20px 30px;">
             <el-form-item label="仓库名称" prop="title" type="string"><el-input v-model="temp.title" @blur="handlerOnblur" placeholder="RedKV/RedKV"/></el-form-item>
@@ -219,11 +219,13 @@ export default {
       background-color: #304156;
       color: white;
       border-bottom: 1px solid #D1DBE5;
-      .el-dialog__title {
+
+      .el-dialog__headerbtn, .el-icon-close {
+        margin-top: -5px;
         color: white;
       }
-      .el-dialog__headerbtn {
-        margin-top: 3px;
+      .el-dialog__title {
+        color: white;
       }
     }
     ::v-deep .el-dialog__footer {
