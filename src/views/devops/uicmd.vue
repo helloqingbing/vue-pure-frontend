@@ -1,79 +1,45 @@
 <template>
-  <div style="margin:20px">
-    <div class='user-panel'>
-      <el-dialog title="要执行的命令" :visible.sync="infoDialog" customClass="cmd-dialog">
-        <div class="cmddiv">
-          <span class="cmd">{{cmdToRun}} </span>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="infoDialog = false">取 消</el-button>
-          <el-button type="primary" @click="finalCmd = cmdToRun; infoDialog = false">确 定</el-button>
-        </span>
-      </el-dialog>
-
-      <el-dialog title="要执行的命令" :visible.sync="getDialog" customClass="cmd-dialog">
-        <div class="cmddiv">
-          <span class="cmd">{{cmdToRun}}</span>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="getDialog = false">取 消</el-button>
-          <el-button type="primary" @click="finalCmd = cmdToRun; getDialog = false">确 认</el-button>
-        </span>
-      </el-dialog>
-
-      <el-card class="box-card">
-        <el-form>
-          <el-form-item v-if="cmdSelected != 'userdefine'" label="服务名称">
-            <el-select v-model="clusterName" filterable placeholder="服务名称"  style="width:400px" @focus="handleCluster" @change="clusterSelect">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="执行命令">
-            <el-select v-model="cmdSelected" placeholder="请选择" style="width:400px" @change="handleCmdSelect" clearable filterable>
-              <el-option label="INFO" value="info"></el-option>
-              <el-option label="GET" value="get"></el-option>
-              <el-option label="TTL" value="ttl"></el-option>
-              <el-option label="SCAN" value="scan"></el-option>
-              <el-option label="HGET" value="hget"></el-option>
-              <el-option label="HGETALL" value="hgetall"></el-option>
-              <el-option v-if="role == 'admin'" label="REBALANCE" value="rebalance"></el-option>
-              <el-option v-if="role == 'admin'" label="USER-DEFINE" value="userdefine"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="参数列表" inline="true">
-            <el-input v-model="getKey" placeholder="请输入要查询的Key" style="width:80%" clearable></el-input>
-
-          </el-form-item>
-          <el-divider></el-divider>
-          <el-form-item>
-            <el-button class="filter-item" type="primary" @click="handleExecCommand">执行</el-button>
-          </el-form-item>
-          <el-form-item v-loading="loading">
-            <codemirror  v-loading="loading" v-model="form.output" class="code-mirror-out"
+  <div class="devops-uicmd">
+    <BasicLayout>
+      <template #wrapper>
+        <el-card>
+          <el-form label-width="80px" :model="uiForm" :rules="rules" ref="uiForm">
+            <el-form-item label="服务名称" inline="true">
+              <el-select v-model="uiForm.clusterName" style="width: 50%;" filterable placeholder="服务名称" @focus="handleCluster" @change="clusterSelect">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="执行命令" inline="true">
+              <el-select v-model="uiForm.cmdSelected" style="width: 50%;" placeholder="请选择" @change="handleCmdSelect" clearable filterable>
+                <el-option label="INFO" value="info"></el-option>
+                <el-option label="GET" value="get"></el-option>
+                <el-option label="TTL" value="ttl"></el-option>
+                <el-option label="SCAN" value="scan"></el-option>
+                <el-option label="HGET" value="hget"></el-option>
+                <el-option label="HGETALL" value="hgetall"></el-option>
+                <el-option v-if="role == 'admin'" label="REBALANCE" value="rebalance"></el-option>
+                <el-option v-if="role == 'admin'" label="USER-DEFINE" value="userdefine"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="参数列表" inline="true" >
+              <el-input v-model="uiForm.cmdParams" style="width: 50%;" placeholder="请输入参数列表" clearable></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" type="primary" @click="handleExecCommand">执行</el-button>
+            </el-form-item>
+            <el-divider><i class="el-icon-mobile-phone"></i>执行结果</el-divider>
+            <codemirror v-loading="loading" v-model="uiForm.output" class="code-mirror-out"
               ref="cmEditor"
-              :value="form.output"
+              :value="uiForm.output"
               :options="cmOptions"
             />
-          </el-form-item>
-        </el-form>
-        <el-drawer
-          title="命令列表"
-          :with-header="false"
-          :visible.sync="drawer"
-          direction="rtl">
-            <div class="drawer-item">
-              <el-input placeholder="请搜索命令" prefix-icon="el-icon-search"> </el-input>
-            </div>
-        </el-drawer>
-      </el-card>
-    </div>
+          </el-form>
+        </el-card>
+      </template>
+    </BasicLayout>
   </div>
 </template>
+
 <script>
 import { codemirror } from 'vue-codemirror'
 import waves from '@/directive/waves' // waves directive
@@ -87,42 +53,31 @@ export default {
   },
   data() {
     return {
-      checked: false,
-      loading: false,
-      checked:false,
-      drawer: false,
-      clusterName: '',
-      form: {
-        cmd: '',
+      uiForm: {
+        clusterName: '',
+        cmdSelected: '',
+        cmdParams: '',
         output: ''
       },
       cmOptions: {
         tabSize: 4,
         styleActiveLine: false,
         lineNumbers: true,
-        styleSelectedText: false,
+        styleSelectedText: true ,
         readOnly: true,
         line: true,
         mode: 'text/javascript',
+        matchBrackets: true,
         theme: "monokai",
         lineWrapping: true,
         extraKeys: { "Ctrl": "autocomplete" }
       },
-      infoDialog: false,
-      getDialog: false,
-      getKey:'',
-      getMKey: '',
-      getCount: 100,
-      getCmd:'',
-      cmdSelected:'',
-      cmdToRun:'',
-      finalCmd:'',
       options:[],
       role: this.$store.state.user.role
     }
   },
   created(){
-    this.getRole()
+    //this.getRole()
   },
   methods: {
     getRole(){
@@ -266,82 +221,17 @@ export default {
 }
 </script>
 
-<style>
-.text {
-  font-size: 14px;
-}
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both
-}
-.el-row {
-  &:last-child {
-    margin-bottom: 0;
+<style lang="scss" scoped>
+.devops-uicmd {
+  .el-card {
+    height: calc(100vh - 113px);
   }
-}
-.el-col {
-  border-radius: 4px;
-}
-.el-button{
-  height: auto;
-}
-.grid-content {
-  border-radius: 4px;
-  border: 1px solid #CCC;
-  text-align: center;
-  min-height: 36px;
-  padding: 10px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-.user-panel {
-  margin-top: 10px
-}
-.drawer-item {
-  margin: 30px 10px 0 10px;
-}
-
-.el-row-item {
-  padding: 5px;
-}
-.code-mirror-out{
-  font-size : 16px;
-  line-height : 110%;
-}
-.cmddiv {
-  max-height:400px;
-  width:100%;
-  background-color: #333;
-  border: 1px solid black;
-  border-redius: 15px;
-  padding: 5px;
-}
-.cmd {
-  font: 16px/20px Monospace;
-  word-wrap: break-word;
-  word-break: break-all;
-  overflow: hidden;
-  color:#FFF;
-  margin: 5px;
-  background-color: #333;
-}
-.el-card__header {
-  padding:0 10px;
-  background-color:#304156;
-  height: 40px;
-  line-height: 40px;
-  color: white;
-}
-.cmd-dialog {
-  width:800px;
-}
-.cmd-dialog-get {
-  width:400px;
+  .code-mirror-out {
+    font-size : 16px;
+    overflow: scroll !important;
+    .CodeMirror {
+      height: calc(100vh - 100px);
+    }
+  }
 }
 </style>

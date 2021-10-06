@@ -12,49 +12,18 @@
           border
           :header-cell-style="{background: '#304156', color:'white', height: '30px'}"
         >
-          <el-table-column
-            prop="id"
-            label="编号"
-            align="center"
-            width="60">
-          </el-table-column>
-          <el-table-column
-            prop="repo_name"
-            label="仓库名称"
-            align="center"
-            width="440">
-          </el-table-column>
-          <el-table-column
-            prop="branch"
-            label="分支"
-            align="center"
-            width="240">
-          </el-table-column>
-          <el-table-column
-            prop="creator"
-            label="创建人"
-            align="center"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="create_time"
-            label="创建时间"
-            align="center">
+          <el-table-column prop="id" label="编号" align="center" width="60"></el-table-column>
+          <el-table-column prop="repo_name" label="仓库名称" align="center" width="440"></el-table-column>
+          <el-table-column prop="branch" label="分支" align="center" width="240"></el-table-column>
+          <el-table-column prop="creator" label="创建人" align="center" width="120"></el-table-column>
+          <el-table-column prop="create_time" label="创建时间" align="center">
             <template slot-scope="scope">
               {{scope.row.create_time.replace("T", " ")}}
             </template>
           </el-table-column>
-          <el-table-column
-            label="操作"
-            width="100"
-            align="center"
-            >
+          <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="primary"
-                plain
-                @click="handleBuild(scope.row)">构建</el-button>
+              <el-button size="mini" type="primary" plain @click="handleBuild(scope.row)">构建</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -70,29 +39,23 @@
             :total="totalSize">
           </el-pagination>
         </div>
-        <el-dialog :title="textMap.register" :visible.sync="dialogFormVisible" customClass="custom-dialog">
+        <el-dialog
+          :title="textMap.register"
+          :visible.sync="dialogFormVisible"
+          width="500px"
+          :show-close="false"
+        >
           <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="100px" style="width: 400px;margin:-20px 30px;">
             <el-form-item label="仓库名称" prop="title" type="string"><el-input v-model="temp.title" @blur="handlerOnblur" placeholder="RedKV/RedKV"/></el-form-item>
             <el-form-item label="分支" prop="branch" type='string'>
               <el-select v-model="temp.branch" placeholder="选择分支" filterable style="min-width:300px">
-                <el-option
-                  v-for="item in options"
-                  :key="item.label"
-                  :label="item.value"
-                  :value="item.value">
-                </el-option>
+                <el-option v-for="item in options" :key="item.label" :label="item.value" :value="item.value"/>
               </el-select>
-
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-divider content-position="left"></el-divider>
-            <el-button @click="dialogFormVisible = false">
-              取消
-            </el-button>
-            <el-button type="primary" size="mini" plain @click="createData('dataForm')">
-              保存
-            </el-button>
+            <el-button @click="dialogFormVisible = false" size="small">取消</el-button>
+            <el-button type="primary" size="small" @click="createData('dataForm')">保存</el-button>
           </div>
         </el-dialog>
       </template>
@@ -238,7 +201,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .devops-build-register {
   .filter-container {
     .el-button {
@@ -250,9 +213,23 @@ export default {
     float: right;
     margin:10px 0
   }
-}
-
-.custom-dialog{
-  width: 500px;
+  .el-dialog__wrapper {
+    ::v-deep .el-dialog__header {
+      padding: 10px;
+      background-color: #304156;
+      color: white;
+      border-bottom: 1px solid #D1DBE5;
+      .el-dialog__title {
+        color: white;
+      }
+      .el-dialog__headerbtn {
+        margin-top: 3px;
+      }
+    }
+    ::v-deep .el-dialog__footer {
+      padding: 10px;
+      border-top: 1px solid #D1DBE5;
+    }
+  }
 }
 </style>

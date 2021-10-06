@@ -2,26 +2,7 @@
   <div class="resource-k8s-dashboard">
     <BasicLayout>
       <template #wrapper>
-        <el-collapse v-model="activeName" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
-          <el-collapse-item name="0">
-            <template slot="title">
-              <span style="margin:0 10px;font-size: 16px"><i class="header-icon el-icon-info"></i>&nbsp; RedKV SOP&nbsp;</span>
-            </template>
-            <div>
-              <ul>
-                <li><a target="_blank" href="https://wiki.xiaohongshu.com/pages/viewpage.action?pageId=125672690">RedKV整体架构</a></li>
-              </ul>
-            </div>
-          </el-collapse-item>
-          <el-collapse-item name="1">
-            <template slot="title">
-              <span style="margin:0 10px;font-size: 16px"><i class="header-icon el-icon-info"></i>&nbsp; RedKV架构分析&nbsp;</span>
-            </template>
-            <div>
-
-            </div>
-          </el-collapse-item>
-        </el-collapse>
+        
       </template>
     </BasicLayout>
   </div>
