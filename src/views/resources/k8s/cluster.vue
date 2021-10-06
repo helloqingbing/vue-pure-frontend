@@ -21,6 +21,36 @@
               >导出</el-button>
             </el-col>
           </el-row>
+          <el-row>
+            <el-dialog
+              :title="'新增K8S集群'"
+              :visible.sync="k8sDialogVisible"
+              :fullscreen="false"
+              width="500px"
+            >
+              <el-form :model="k8sCluster" :rules="rules" ref="k8sClusterForm" label-position="right" label-width="80px">
+                <el-form-item label="集群名称" prop="clusterName">
+                  <el-input v-model="k8sCluster.clusterName"></el-input>
+                </el-form-item>
+                <el-form-item label="AZone">
+                  <el-input v-model="k8sCluster.azone"/>
+                </el-form-item>
+                <el-form-item label="厂商">
+                  <el-input v-model="k8sCluster.producer"/>
+                </el-form-item>
+                <el-form-item label="ENV">
+                  <el-input v-model="k8sCluster.env"/>
+                </el-form-item>
+                <el-form-item label="CBS">
+                  <el-input v-model="k8sCluster.cbs"/>
+                </el-form-item>
+              </el-form>
+              <span slot="footer">
+                <el-button size="small" @click="k8sDialogVisible = false">取 消</el-button>
+                <el-button type="primary" size="small" @click="handleAddK8SCluster('k8sClusterForm')">保存</el-button>
+              </span>
+            </el-dialog>
+          </el-row>
           <el-row :gutter="10">
             <draggable v-model="myArray" draggable=".item">
                 <div v-for="element in myArray" :key="element.id" class="item">
@@ -67,6 +97,14 @@ export default {
   },
   data() {
     return {
+      k8sDialogVisible: false,
+      k8sCluster: {
+        clusterName: "",
+        azone: ""
+      },
+      rules: {
+        name: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
+      },
       myArray:[{
         id: 1,
         title: 'cls-hbsmzlul-2905526316-context-default',
@@ -103,6 +141,9 @@ export default {
       })*/
     },
     handleAdd() {
+      this.k8sDialogVisible = true
+    },
+    handleAddK8SCluster() {
 
     },
     handleExport() {
@@ -112,7 +153,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .resource-k8s-cluster {
   .action {
     margin-bottom: 15px;
@@ -123,6 +164,24 @@ export default {
   }
   .clearfix:after {
     clear: both
+  }
+  .el-dialog__wrapper {
+    ::v-deep .el-dialog__header {
+      padding: 10px;
+      background-color: #304156;
+      color: white;
+
+      .el-dialog__title {
+        color: white;
+      }
+    }
+    ::v-deep .el-dialog__footer {
+      padding: 10px;
+      border-top: 1px solid #D1DBE5;
+    }
+    ::v-deep .el-dialog__body {
+      padding: 20px 40px;
+    }
   }
 }
 </style>

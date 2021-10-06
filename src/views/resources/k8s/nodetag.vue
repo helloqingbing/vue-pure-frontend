@@ -16,20 +16,23 @@
                     </div>
                   </div>
                 </div>
-                <el-tree
-                  :data="treeData"
-                  node-key="id"
-                  ref="tagTree"
-                  :expand-on-click-node="false"
-                  @node-contextmenu="handleRightClick"
-                  @node-click="nodeClick"
-                  default-expand-all
-                >
-                </el-tree>
+                <div class="tree-scroll">
+                  <el-tree
+                    :data="treeData"
+                    class="flow-tree"
+                    node-key="id"
+                    ref="tagTree"
+                    :expand-on-click-node="false"
+                    @node-contextmenu="handleRightClick"
+                    @node-click="nodeClick"
+                    default-expand-all
+                  >
+                  </el-tree>
+                </div>
                 <el-dialog
                   :title="nodeActionName"
                   :visible.sync="nodeActionDialog"
-                  width="30%"
+                  width="400px"
                   :show-close="false"
                   :before-close="handleBeforeClose"
                 >
@@ -95,6 +98,36 @@ export default {
         id: 4,
         label: 'redkv-proxy',
         children: [{
+          id: 9,
+          label: 'redkv-proxy-sec'
+        }, {
+          id: 10,
+          label: 'redkv-proxy-rec'
+        },{
+          id: 9,
+          label: 'redkv-proxy-sec'
+        }, {
+          id: 10,
+          label: 'redkv-proxy-rec'
+        },{
+          id: 9,
+          label: 'redkv-proxy-sec'
+        }, {
+          id: 10,
+          label: 'redkv-proxy-rec'
+        },{
+          id: 9,
+          label: 'redkv-proxy-sec'
+        }, {
+          id: 10,
+          label: 'redkv-proxy-rec'
+        },{
+          id: 9,
+          label: 'redkv-proxy-sec'
+        }, {
+          id: 10,
+          label: 'redkv-proxy-rec'
+        },{
           id: 9,
           label: 'redkv-proxy-sec'
         }, {
@@ -267,6 +300,13 @@ export default {
       font-size: 14px;
       padding-right: 8px;
     }
+    .flow-tree {
+      overflow: auto;
+      height: calc(100vh - 200px);
+    }
+    .tree-scroll {
+      height: 100%;
+    }
     .pop-out-menu {
       overflow: auto;
       .right-menu {
@@ -296,6 +336,8 @@ export default {
     .el-dialog__wrapper {
       ::v-deep .el-dialog__header {
         padding: 10px;
+        background-color: #304156;
+        color: #FFFFFF;
         border-bottom: 1px solid #D1DBE5;
       }
       ::v-deep .el-dialog__footer {
