@@ -28,11 +28,14 @@
               <el-button size="small" type="primary" @click="handleExecCommand">执行</el-button>
             </el-form-item>
             <el-divider><i class="el-icon-mobile-phone"></i>执行结果</el-divider>
-            <codemirror v-loading="loading" v-model="uiForm.output" class="code-mirror-out"
+            <div class="cmdOutput">
+              <pre class="preview pre">{{uiForm.output}}</pre>
+            </div>
+            <!--codemirror v-loading="loading" v-model="uiForm.output" class="code-mirror-out"
               ref="cmEditor"
               :value="uiForm.output"
               :options="cmOptions"
-            />
+            /-->
           </el-form>
         </el-card>
       </template>
@@ -41,15 +44,15 @@
 </template>
 
 <script>
-import { codemirror } from 'vue-codemirror'
+//import { codemirror } from 'vue-codemirror'
 import waves from '@/directive/waves' // waves directive
 // import base style
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/monokai.css'
+//import 'codemirror/lib/codemirror.css'
+//import 'codemirror/theme/monokai.css'
 
 export default {
   components: {
-    codemirror
+    //codemirror
   },
   data() {
     return {
@@ -59,7 +62,8 @@ export default {
         cmdParams: '',
         output: ''
       },
-      cmOptions: {
+    }
+      /*cmOptions: {
         tabSize: 4,
         styleActiveLine: false,
         lineNumbers: true,
@@ -74,9 +78,9 @@ export default {
       },
       options:[],
       role: this.$store.state.user.role
-    }
+    }*/
   },
-  created(){
+  created() {
     //this.getRole()
   },
   methods: {
@@ -221,16 +225,32 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .devops-uicmd {
   .el-card {
     height: calc(100vh - 113px);
   }
+  .cmdOutput {
+    height: calc(100vh - 360px);
+    .preview {
+      flex: 1;
+      border-radius: 3px;
+      padding: 10px;
+      color: white;
+      font-size: 16px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      background-color: #304156;
+      height: calc(100vh - 360px);
+      line-height: 1.5;
+    }
+  }
   .code-mirror-out {
     font-size : 16px;
-    overflow: scroll !important;
-    .CodeMirror {
-      height: calc(100vh - 100px);
+    height: calc(100vh - 360px);
+
+    .CodeMirror.CodeMirror-wrap {
+      height: calc(100vh - 360px) !important;
     }
   }
 }
