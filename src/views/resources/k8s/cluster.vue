@@ -5,29 +5,14 @@
         <el-card>
           <el-row :gutter="10" class="action">
             <el-col :span="1.5">
-              <el-button
-                type="primary"
-                icon="el-icon-plus"
-                size="small"
-                @click="handleAdd"
-              >新增</el-button>
+              <el-button type="primary" icon="el-icon-plus" size="small" @click="handleAdd">新增</el-button>
             </el-col>
             <el-col :span="1.5">
-              <el-button
-                type="warning"
-                icon="el-icon-download"
-                size="small"
-                @click="handleExport"
-              >导出</el-button>
+              <el-button type="warning" icon="el-icon-download" size="small" @click="handleExport">导出</el-button>
             </el-col>
           </el-row>
           <el-row>
-            <el-dialog
-              :title="'新增K8S集群'"
-              :visible.sync="k8sDialogVisible"
-              :fullscreen="false"
-              width="500px"
-            >
+            <el-dialog :title="'新增K8S集群'" :visible.sync="k8sDialogVisible" :fullscreen="false" width="500px">
               <el-form :model="k8sCluster" :rules="rules" ref="k8sClusterForm" label-position="right" label-width="80px">
                 <el-form-item label="集群名称" prop="clusterName">
                   <el-input v-model="k8sCluster.clusterName"></el-input>
@@ -36,7 +21,13 @@
                   <el-input v-model="k8sCluster.azone"/>
                 </el-form-item>
                 <el-form-item label="厂商">
-                  <el-input v-model="k8sCluster.producer"/>
+                  <el-select v-model="k8sCluster.producer" placeholder="请选择" clearable filterable allow-create>
+                    <el-option v-for="item in producerOptions"
+                      :icon="item.icon" :key="item.value" :label="item.label" :value="item.value">
+                      <span style="float: left"><svg-icon :icon-class="item.icon"></svg-icon>&nbsp;{{ item.label }}</span>
+                      <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                    </el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="ENV">
                   <el-input v-model="k8sCluster.env"/>
@@ -102,6 +93,11 @@ export default {
         clusterName: "",
         azone: ""
       },
+      producerOptions: [
+        {label: "腾讯云", value: "TecentCloud", icon: "tecentcloud"},
+        {label: "华为云", value: "HuaweiCloud", icon: "huaweicloud"},
+        {label: "阿里云", value: "Aliyun", icon: "aliyun"}
+      ],
       rules: {
         name: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
       },
