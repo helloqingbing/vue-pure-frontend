@@ -1,30 +1,28 @@
 <template>
-  <div class="file">
+  <div class="resource-redkv-bashbaord">
     <BasicLayout>
       <template #wrapper>
-        <DragColumn>
-          <div slot="left" class="left">
-            <el-card></el-card>
-          </div>
-          <div slot="right" class="right">
-            <el-card></el-card>
-          </div>
-        </DragColumn>
+        <el-card>
+          <Split class="page-split" :gutterSize="7">
+            <SplitArea :size="20" :minSize="100" class="left">
+              a
+            </SplitArea>
+            <SplitArea :size="79" :minSize="400" class="right">
+              b
+            </SplitArea>
+          </Split>
+         </el-card>
       </template>
     </BasicLayout>
   </div>
 </template>
 
 <script>
-import DragColumn from '@/components/DragColumn/index'
-import Left from '@/components/FileManage/Left'
-import Right from '@/components/FileManage/Right'
+
 export default {
   name: 'Dashboard',
   components: {
-    DragColumn,
-    Left,
-    Right
+
   },
   data() {
     return {
@@ -38,7 +36,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .file .el-card {
-    height: calc(100vh - 113px);
+  .resource-redkv-bashbaord {
+    .el-card {
+      height: calc(100vh - 113px);
+    }
+    .page-split {
+      height: calc(100vh - 115px);
+      margin: -20px 0 0 -20px;
+      width: calc(100vw - 220px);
+      .left, .right {
+        padding: 20px;
+      }
+    }
+    .gutter,.gutter-horizontal {
+      background: #FFFFFF !important;
+      padding-top: -20px;
+    }
   }
 </style>

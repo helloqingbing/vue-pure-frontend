@@ -2,85 +2,83 @@
   <div class="resource-k8s-nodetag">
     <BasicLayout>
       <template #wrapper>
+        <el-card>
           <Split class="page-split" :gutterSize="7">
-            <SplitArea :size="20" :minSize="100">
-              <el-card>
-                <el-input placeholder="输入关键字进行过滤" size="mini" v-model="filterText" clearable style="margin: 10px 0"></el-input>
-                <div class="pop-out-menu">
-                  <!--鼠标右键菜单栏 -->
-                  <div v-show="showRightMenu">
-                    <div id="menu" class="right-menu">
-                      <a class="menu-item el-icon-plus" @click="handleNodeAction('add')">增加</a>
-                      <a class="menu-item el-icon-delete" @click="handleNodeAction('delete')">删除</a>
-                      <a class="menu-item el-icon-edit"  @click="handleNodeAction('edit')">编辑</a>
-                    </div>
+            <SplitArea :size="20" :minSize="100" class="left">
+              <el-input placeholder="输入关键字进行过滤" size="mini" v-model="filterText" clearable style="margin: 10px 0"></el-input>
+              <div class="pop-out-menu">
+                <!--鼠标右键菜单栏 -->
+                <div v-show="showRightMenu">
+                  <div id="menu" class="right-menu">
+                    <a class="menu-item el-icon-plus" @click="handleNodeAction('add')">增加</a>
+                    <a class="menu-item el-icon-delete" @click="handleNodeAction('delete')">删除</a>
+                    <a class="menu-item el-icon-edit"  @click="handleNodeAction('edit')">编辑</a>
                   </div>
                 </div>
-                <div class="tree-scroll">
-                  <el-tree
-                    :data="treeData"
-                    class="flow-tree"
-                    node-key="id"
-                    ref="tagTree"
-                    :expand-on-click-node="false"
-                    @node-contextmenu="handleRightClick"
-                    @node-click="nodeClick"
-                    default-expand-all
-                  >
-                  </el-tree>
-                </div>
-                <el-dialog
-                  :title="nodeActionName"
-                  :visible.sync="nodeActionDialog"
-                  width="400px"
-                  :show-close="false"
-                  :before-close="handleBeforeClose"
+              </div>
+              <div class="tree-scroll">
+                <el-tree
+                  :data="treeData"
+                  class="flow-tree"
+                  node-key="id"
+                  ref="tagTree"
+                  :expand-on-click-node="false"
+                  @node-contextmenu="handleRightClick"
+                  @node-click="nodeClick"
+                  default-expand-all
                 >
-                  <span slot="title" class="dialog-footer">
-                    <span v-if="nodeActionType == 'add'" class="el-icon-plus"></span>&nbsp;
-                    <span v-else class="el-icon-edit"></span> &nbsp;
-                    <span>{{nodeActionName}}</span>
-                  </span>
+                </el-tree>
+              </div>
+              <el-dialog
+                :title="nodeActionName"
+                :visible.sync="nodeActionDialog"
+                width="400px"
+                :show-close="false"
+                :before-close="handleBeforeClose"
+              >
+                <span slot="title" class="dialog-footer">
+                  <span v-if="nodeActionType == 'add'" class="el-icon-plus"></span>&nbsp;
+                  <span v-else class="el-icon-edit"></span> &nbsp;
+                  <span>{{nodeActionName}}</span>
+                </span>
 
-                  <div><el-input v-model="nodeName" placeholder="请输入内容"></el-input></div>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button size="small" @click="handleCancelNodeAction()">取 消</el-button>
-                    <el-button size="small" type="primary" @click="handleCommitNodeAction()">确 定</el-button>
-                  </span>
-                </el-dialog>
-              </el-card>
+                <div><el-input v-model="nodeName" placeholder="请输入内容"></el-input></div>
+                <span slot="footer" class="dialog-footer">
+                  <el-button size="small" @click="handleCancelNodeAction()">取 消</el-button>
+                  <el-button size="small" type="primary" @click="handleCommitNodeAction()">确 定</el-button>
+                </span>
+              </el-dialog>
             </SplitArea>
-            <SplitArea :size="79" :minSize="400">
-              <el-card>
-                <el-row>
-                  <el-input class="input" v-model="searchcluster" prefix-icon="el-icon-search" clearable  placeholder="输入查询的字符"></el-input>
-                  <el-table
-                    :data="clusterFilterData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
-                    border
-                    :header-cell-style="{background: '#304156', color:'white', height: '30px'}"
-                  >
-                    <el-table-column prop="tagName" label="标签名称" align="center"> </el-table-column>
-                    <el-table-column prop="nodesCount" label="运行节点数"> </el-table-column>
-                    <el-table-column prop="nodesAvaliable" label="可用节点数"> </el-table-column>
-                    <el-table-column prop="status" label="状态"> </el-table-column>
-                  </el-table>
+            <SplitArea :size="79" :minSize="400" class="right">
+              <el-row>
+                <el-input class="input" v-model="searchcluster" prefix-icon="el-icon-search" clearable  placeholder="输入查询的字符"></el-input>
+                <el-table
+                  :data="clusterFilterData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
+                  border
+                  :header-cell-style="{background: '#304156', color:'white', height: '30px'}"
+                >
+                  <el-table-column prop="tagName" label="标签名称" align="center"> </el-table-column>
+                  <el-table-column prop="nodesCount" label="运行节点数"> </el-table-column>
+                  <el-table-column prop="nodesAvaliable" label="可用节点数"> </el-table-column>
+                  <el-table-column prop="status" label="状态"> </el-table-column>
+                </el-table>
 
-                  <div style="margin:10px 0; float:right">
-                    <el-pagination
-                      @size-change="handleSizeChange"
-                      @current-change="handleCurrentChange"
-                      :current-page="currentPage"
-                      :page-sizes="[10, 20, 50, 100]"
-                      :page-size="pageSize"
-                      background
-                      layout="total, sizes, prev, pager, next, jumper"
-                      :total="tableData.length">
-                    </el-pagination>
-                  </div>
-                </el-row>
-              </el-card>
+                <div style="margin:10px 0; float:right">
+                  <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="pageSize"
+                    background
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableData.length">
+                  </el-pagination>
+                </div>
+              </el-row>
             </SplitArea>
           </Split>
+        </el-card>
       </template>
     </BasicLayout>
   </div>
@@ -283,10 +281,16 @@ export default {
       height: calc(100vh - 113px);
     }
     .page-split {
-      height: calc(100vh - 113px);
+      height: calc(100vh - 115px);
+      margin: -20px 0 0 -20px;
+      width: calc(100vw - 220px);
+      .left, .right {
+        padding: 20px;
+      }
     }
     .gutter,.gutter-horizontal {
       background: #FFFFFF !important;
+      padding-top: -20px;
     }
 
     .input{
