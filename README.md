@@ -1,4 +1,4 @@
-# ops frontend based on go-admin-ui
+# ops pure version for frontend based on go-admin-ui， 
 
   <img align="right" width="320" src="https://gitee.com/mydearzwj/image/raw/master/img/go-admin.svg">
 
@@ -14,23 +14,13 @@ The front-end and back-end separation authority management system based on Gin +
 
 ## ✨ Feature
 
-- Follow RESTful API design specifications
+- Based on go-admin-ui features and remove role based control
 
-- Based on the GIN WEB API framework, it provides rich middleware support (user authentication, cross-domain, access log, tracking ID, etc.)
-
-- RBAC access control model based on Casbin
-
-- Database storage based on GORM, which can expand multiple types of databases
-
-- Simple model mapping of configuration files to quickly get the desired configuration
-
-- Code generation tool
-
-- Form builder
-
-- Multi-command mode
-
-- TODO: unit test
+## ✨ New Feature
+- Add SSO login
+- Fix column collapse issue when sider toggled
+- Expand tree component feature, add pop dialog for node edit/add
+- Add split panal drag feature
 
 
 You need to install locally [go] [gin] [node](http://nodejs.org/) 和 [git](https://git-scm.com/)
@@ -44,8 +34,8 @@ At the same time, a series of tutorials including videos and documents are provi
 ```bash
 
 # Create a development directory
-mkdir goadmin
-cd goadmin
+mkdir kvops
+cd kvops
 ```
 
 ### Get the code
