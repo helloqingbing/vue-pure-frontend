@@ -1,13 +1,4 @@
-# ops pure version for frontend based on go-admin-ui， 
-
-  <img align="right" width="320" src="https://gitee.com/mydearzwj/image/raw/master/img/go-admin.svg">
-
-
-[![Build Status](https://github.com/wenjianzhang/go-admin/workflows/build/badge.svg)](https://github.com/go-admin-team/go-admin)
-[![Release](https://img.shields.io/github/release/go-admin-team/go-admin.svg?style=flat-square)](https://github.com/go-admin-team/go-admin/releases)
-[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/go-admin-team/go-admin)
-
-English | [简体中文](https://github.com/go-admin-team/go-admin/blob/master/README.Zh-cn.md)
+# vue-pure-frontend pure version for frontend design based on go-admin-ui 
 
 The front-end and back-end separation authority management system based on Gin + Vue + Element UI is extremely simple to initialize the system. You only need to modify the database connection in the configuration file. The system supports multi-instruction operations. Migration instructions can make it easier to initialize database information. Service instructions It's easy to start the api service.
 
@@ -17,6 +8,7 @@ The front-end and back-end separation authority management system based on Gin +
 - Based on go-admin-ui features and remove role based control
 
 ## ✨ New Feature
+
 - Add SSO login
 - Fix column collapse issue when sider toggled
 - Expand tree component feature, add pop dialog for node edit/add
@@ -34,8 +26,8 @@ At the same time, a series of tutorials including videos and documents are provi
 ```bash
 
 # Create a development directory
-mkdir kvops
-cd kvops
+mkdir vue-pure-frontend
+cd vue-pure-frontend
 ```
 
 ### Get the code
@@ -44,10 +36,10 @@ cd kvops
 
 ```bash
 # Get backend code
-git clone https://github.com/helloqingbing/vue-pure-backend.git
+git clone https://github.com/helloqingbing/vue-pure-frontend.git
 
 # Get the front-end code
-git clone https://github.com/helloqingbing/vue-pure-backend.git
+git clone https://github.com/helloqingbing/vue-pure-frontend.git
 
 ```
 
@@ -57,7 +49,7 @@ git clone https://github.com/helloqingbing/vue-pure-backend.git
 
 ```bash
 # Enter the go-admin backend project
-cd ./vue-pure-backend
+cd ./vue-pure-frontend
 
 # Compile the project
 go build
@@ -74,57 +66,18 @@ vi ./config/setting.yml
 :::tip ⚠️Note that this problem will occur if CGO is not installed in the windows environment;
 
 ```bash
-E:\vue-pure-backend>go build
-# github.com/mattn/go-sqlite3
-cgo: exec /missing-cc: exec: "/missing-cc": file does not exist
-```
-
-or
-
-```bash
-D:\Code\vue-pure-backend>go build
-# github.com/mattn/go-sqlite3
-cgo: exec gcc: exec: "gcc": executable file not found in %PATH%
-```
+go build
 
 #### Use docker to compile and start
 
 ```shell
 # Compile the image
-docker build -t go-admin .
+docker build -t kvops .
 
 
 # Start the container, the first go-admin is the container name, and the second go-admin is the image name
 # -v Mapping configuration file Local path: container path
 docker run --name go-admin -p 8000:8000 -v /config/settings.yml:/config/settings.yml -d go-admin-server
-```
-
-
-
-#### Generation Document
-
-```bash
-go generate
-```
-
-#### Cross compile
-```bash
-# windows
-env GOOS=windows GOARCH=amd64 go build main.go
-
-# or
-# linux
-env GOOS=linux GOARCH=amd64 go build main.go
-```
-
-### UI interactive terminal startup instructions
-
-```bash
-# Installation dependencies
-npm install   # or cnpm install
-
-# Start service
-npm run dev
 ```
 
 ## 🎬 Online Demo
